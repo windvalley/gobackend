@@ -46,7 +46,6 @@ func initGenericAPIServer(s *GenericAPIServer) {
 	// do some setup
 	// s.GET(path, ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	s.Setup()
 	s.InstallMiddlewares()
 	s.InstallAPIs()
 }
@@ -74,17 +73,6 @@ func (s *GenericAPIServer) InstallAPIs() {
 	s.GET("/version", func(c *gin.Context) {
 		core.WriteResponse(c, nil, version.Get())
 	})
-}
-
-// Setup do some setup work for gin engine.
-func (s *GenericAPIServer) Setup() {
-	gin.SetMode(s.mode)
-
-	fmt.Printf("@@@@@@@@@@@@@@@%v\n", gin.Mode())
-
-	//gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
-	//log.Infof("%-6s %-s --> %s (%d handlers)", httpMethod, absolutePath, handlerName, nuHandlers)
-	//}
 }
 
 // InstallMiddlewares install generic middlewares.

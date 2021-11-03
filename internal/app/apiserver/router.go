@@ -30,7 +30,7 @@ func installController(g *gin.Engine) *gin.Engine {
 
 	storeIns := mysql.GetMysqlFactory()
 
-	log.Debugf("get mysql factory instance: %v", storeIns)
+	log.Infof("get mysql factory instance: %v", storeIns)
 
 	v1 := g.Group("/v1")
 	{

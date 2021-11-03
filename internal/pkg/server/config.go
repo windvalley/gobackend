@@ -59,6 +59,14 @@ func (c *Config) Complete() CompletedConfig {
 
 // NewServer returns a new instance of GenericAPIServer from the given config.
 func (c CompletedConfig) NewServer() (*GenericAPIServer, error) {
+	gin.SetMode(c.Mode)
+
+	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+		log.Debugf("%-6s %-s --> %s (%d handlers)", httpMethod, absolutePath, handlerName, nuHandlers)
+	}
+
+	engine := gin.New()
+
 	s := &GenericAPIServer{
 		InsecureServingInfo: c.InsecureServing,
 		mode:                c.Mode,
@@ -66,7 +74,7 @@ func (c CompletedConfig) NewServer() (*GenericAPIServer, error) {
 		enableMetrics:       c.EnableMetrics,
 		enableProfiling:     c.EnableProfiling,
 		middlewares:         c.Middlewares,
-		Engine:              gin.New(),
+		Engine:              engine,
 	}
 
 	initGenericAPIServer(s)

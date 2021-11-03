@@ -79,7 +79,7 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 
 	store.SetClient(mysqlFactory)
 
-	log.Debugf("init mysql factory instance: %+v", mysqlFactory)
+	log.Infof("init mysql factory instance: %+v", mysqlFactory)
 
 	return nil
 }
