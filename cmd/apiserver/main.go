@@ -5,6 +5,8 @@ import (
 	"os"
 	"runtime"
 	"time"
+
+	"go-web-demo/internal/app/apiserver"
 )
 
 func main() {
@@ -13,4 +15,6 @@ func main() {
 	if os.Getenv("GOMAXPROCS") == "" {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 	}
+
+	apiserver.NewApp("apiserver").Run()
 }

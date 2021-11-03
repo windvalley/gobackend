@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -150,6 +151,20 @@ func New(opts *Options) *Logger {
 	l = l.WithOptions(zap.AddStacktrace(zapcore.PanicLevel), zap.AddCallerSkip(1))
 
 	return newLogger(l)
+}
+
+// NewStdInfoLogger returns *log.Logger which writes to std.zapLogger at info level.
+func NewStdInfoLogger() *log.Logger {
+	if std == nil {
+		return nil
+	}
+
+	l, err := zap.NewStdLogAt(std.zapLogger, zapcore.InfoLevel)
+	if err != nil {
+		return nil
+	}
+
+	return l
 }
 
 func buildOptions(cfg *zap.Config, errSink zapcore.WriteSyncer) []zap.Option {

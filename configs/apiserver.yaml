@@ -1,0 +1,92 @@
+# RESTful API
+server:
+  # server mode: release, debug, test;
+  # Default: release
+  mode: release
+  # Enable server health check or not，if enabled, will install /healthz router;
+  # Default: true
+  healthz: true
+  # Default: ""
+  middlewares: recovery,logger,secure,nocache,cors
+  # Self ping check after server start;
+  # Default: 3
+  max-ping-count: 3
+
+# HTTP
+insecure:
+  # Default: 127.0.0.1
+  bind-address: 127.0.0.1
+  # Default: 8080
+  bind-port: 8089
+
+# MySQL
+mysql:
+  # Default: 127.0.0.1:3306
+  host: 127.0.0.1:3306
+  # Default: ""
+  username: ""
+  # Default: ""
+  password: ""
+  # Default: ""
+  database: "test"
+  # Default: 100
+  max-idle-connections: 100
+  # Default: 100
+  max-open-connections: 100
+  # Default: 10
+  max-connection-life-time: 10s
+  # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
+  # Default: 1
+  log-level: 4
+
+log:
+  # Logger Name;
+  # Default: ""
+  name: apiserver
+  # debug, info, warn, error, dpanic, panic, fatal;
+  # Default: info
+  level: info
+  # console/text, json;
+  # Default: console
+  format: console
+  # Default: false
+  disable-color: false
+  # caller will print filename, funcname, line number;
+  # Default: false
+  disable-caller: false
+  # stacktrace will print stack information above panic level;
+  # Default: false
+  disable-stacktrace: false
+  # All log level messages will be writen to;
+  # Default: stdout
+  output-paths: stdout,./apiserver.log
+  # Only log internal errors will be written to;
+  # Default: stderr
+  error-output-paths: stderr,./apiserver.error.log
+  # Rotate log files or not;
+  # Default: false
+  enable-rotate: true
+  # Maximum size in megabytes of the log file before it gets rotated,
+  # if the value is 0, the log files will not be rotated.
+  # Default: 100
+  rotate-max-size: 100
+  # Saved days, if 0, means no limit;
+  # Default: 0
+  rotate-max-age: 30
+  # Saved count, if 0, means no limit;
+  # Default: 0
+  rotate-max-backups: 0
+  # Use local time in log file name;
+  # Default: true
+  rotate-localtime: true
+  # Gzip log files;
+  # Default: false
+  rotate-compress: false
+
+feature:
+  # If enable, it will add router: /metrics;
+  # Default: true
+  enable-metrics: true
+  # <host>:<port>/debug/pprof/;
+  # Default: true
+  profiling: false

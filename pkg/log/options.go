@@ -48,7 +48,7 @@ type Options struct {
 	RotateMaxAge      int      `json:"rotate-max-age"     mapstructure:"rotate-max-age"`
 	RotateMaxBackups  int      `json:"rotate-max-backups" mapstructure:"rotate-max-backups"`
 	RotateLocaltime   bool     `json:"rotate-localtime"   mapstructure:"rotate-localtime"`
-	RotateCompress    bool     `json:"rotate-compression" mapstructure:"rotate-compression"`
+	RotateCompress    bool     `json:"rotate-compress"    mapstructure:"rotate-compress"`
 }
 
 // NewOptions return default log options instance.

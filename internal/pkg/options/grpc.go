@@ -51,7 +51,7 @@ func (s *GRPCOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.IntVar(&s.BindPort, "grpc.bind-port", s.BindPort, ""+
 		"The port on which to serve unsecured, unauthenticated grpc access. It is assumed "+
 		"that firewall rules are set up such that this port is not reachable from outside of "+
-		"the deployed machine and that port 443 on the iam public address is proxied to this "+
+		"the deployed machine and that port 443 on the public address is proxied to this "+
 		"port. This is performed by nginx in the default setup. Set to zero to disable.")
 
 	fs.IntVar(&s.MaxMsgSize, "grpc.max-msg-size", s.MaxMsgSize, "gRPC max message size.")

@@ -2,8 +2,12 @@ package options
 
 import (
 	"fmt"
+	"net"
+	"strconv"
 
 	"github.com/spf13/pflag"
+
+	"go-web-demo/internal/pkg/server"
 )
 
 // InsecureServingOptions are for creating an unauthenticated, unauthorized, insecure port.
@@ -40,6 +44,15 @@ func (s *InsecureServingOptions) Validate() []error {
 	return errors
 }
 
+// ApplyTo applies the run options to the method receiver and returns self.
+func (s *InsecureServingOptions) ApplyTo(c *server.Config) error {
+	c.InsecureServing = &server.InsecureServingInfo{
+		Address: net.JoinHostPort(s.BindAddress, strconv.Itoa(s.BindPort)),
+	}
+
+	return nil
+}
+
 // AddFlags adds flags related to features for a specific api server to the
 // specified FlagSet.
 func (s *InsecureServingOptions) AddFlags(fs *pflag.FlagSet) {
@@ -49,6 +62,6 @@ func (s *InsecureServingOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.IntVar(&s.BindPort, "insecure.bind-port", s.BindPort, ""+
 		"The port on which to serve unsecured, unauthenticated access. It is assumed "+
 		"that firewall rules are set up such that this port is not reachable from outside of "+
-		"the deployed machine and that port 443 on the iam public address is proxied to this "+
+		"the deployed machine and that port 443 on the public address is proxied to this "+
 		"port. This is performed by nginx in the default setup. Set to zero to disable.")
 }
