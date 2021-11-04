@@ -46,8 +46,16 @@ func initGenericAPIServer(s *GenericAPIServer) {
 	// do some setup
 	// s.GET(path, ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	s.Setup()
 	s.InstallMiddlewares()
 	s.InstallAPIs()
+}
+
+// Setup ...
+func (s *GenericAPIServer) Setup() {
+	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+		log.Infof("%-6s %-s --> %s (%d handlers)", httpMethod, absolutePath, handlerName, nuHandlers)
+	}
 }
 
 // InstallAPIs install generic apis.

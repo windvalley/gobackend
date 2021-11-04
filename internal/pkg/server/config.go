@@ -61,10 +61,6 @@ func (c *Config) Complete() CompletedConfig {
 func (c CompletedConfig) NewServer() (*GenericAPIServer, error) {
 	gin.SetMode(c.Mode)
 
-	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
-		log.Debugf("%-6s %-s --> %s (%d handlers)", httpMethod, absolutePath, handlerName, nuHandlers)
-	}
-
 	engine := gin.New()
 
 	s := &GenericAPIServer{
