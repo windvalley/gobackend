@@ -10,7 +10,6 @@ import (
 
 const (
 	consoleFormat = "console"
-	textFormat    = "text"
 	jsonFormat    = "json"
 )
 
@@ -163,7 +162,7 @@ func (o *Options) Validate() []error {
 	}
 
 	format := strings.ToLower(o.Format)
-	if format != consoleFormat && format != textFormat && format != jsonFormat {
+	if format != consoleFormat && format != jsonFormat {
 		errs = append(errs, fmt.Errorf("invalid log format: %q", o.Format))
 	}
 

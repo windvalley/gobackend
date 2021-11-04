@@ -12,10 +12,13 @@ import (
 	"go-web-demo/pkg/log"
 )
 
+var logOptions *log.Options
+
 // defaultLogFormatter is the default log format function Logger middleware uses.
 var defaultLogFormatter = func(param gin.LogFormatterParams) string {
 	var statusColor, methodColor, resetColor string
-	if param.IsOutputColor() {
+
+	if !logOptions.DisableColor {
 		statusColor = param.StatusCodeColor()
 		methodColor = param.MethodColor()
 		resetColor = param.ResetColor()
@@ -26,11 +29,11 @@ var defaultLogFormatter = func(param gin.LogFormatterParams) string {
 		param.Latency = param.Latency - param.Latency%time.Second
 	}
 
-	return fmt.Sprintf("%s%3d%s - [%s] \"%v %s%s%s %s\" %s",
-		// param.TimeStamp.Format("2006/01/02 - 15:04:05"),
+	return fmt.Sprintf("%s%3d%s - [%s] %vms %dbytes %s%s%s %s %s",
 		statusColor, param.StatusCode, resetColor,
 		param.ClientIP,
-		param.Latency,
+		param.Latency.Milliseconds(),
+		param.BodySize,
 		methodColor, param.Method, resetColor,
 		param.Path,
 		param.ErrorMessage,
@@ -40,7 +43,9 @@ var defaultLogFormatter = func(param gin.LogFormatterParams) string {
 // Logger instances a Logger middleware that will write the logs to gin.DefaultWriter.
 // By default gin.DefaultWriter = os.Stdout.
 func Logger() gin.HandlerFunc {
-	return LoggerWithConfig(GetLoggerConfig(nil, nil, nil))
+	logOptions = log.GetOptions()
+
+	return LoggerWithConfig(getLoggerConfig(defaultLogFormatter, nil, nil))
 }
 
 // LoggerWithFormatter instance a Logger middleware with the specified log format function.
@@ -75,7 +80,6 @@ func LoggerWithConfig(conf gin.LoggerConfig) gin.HandlerFunc {
 	notlogged := conf.SkipPaths
 
 	isTerm := true
-
 	if w, ok := out.(*os.File); !ok || os.Getenv("TERM") == "dumb" ||
 		(!isatty.IsTerminal(w.Fd()) && !isatty.IsCygwinTerminal(w.Fd())) {
 		isTerm = false
@@ -96,7 +100,6 @@ func LoggerWithConfig(conf gin.LoggerConfig) gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-		// Start timer
 		start := time.Now()
 		path := c.Request.URL.Path
 		raw := c.Request.URL.RawQuery
@@ -104,14 +107,13 @@ func LoggerWithConfig(conf gin.LoggerConfig) gin.HandlerFunc {
 		// Process request
 		c.Next()
 
-		// Log only when path is not being skipped
+		// Log only when request_path is not being skipped
 		if _, ok := skip[path]; !ok {
 			param := gin.LogFormatterParams{
 				Request: c.Request,
 				Keys:    c.Keys,
 			}
 
-			// Stop timer
 			param.TimeStamp = time.Now()
 			param.Latency = param.TimeStamp.Sub(start)
 
@@ -128,7 +130,30 @@ func LoggerWithConfig(conf gin.LoggerConfig) gin.HandlerFunc {
 
 			param.Path = path
 
-			log.C(c).Info(formatter(param))
+			if logOptions.Format == "json" {
+				log.C(c).WithFields(
+					log.Int("status", param.StatusCode),
+					log.String("latency", fmt.Sprintf("%.3f", param.Latency.Seconds())),
+					log.String("client_ip", param.ClientIP),
+					log.String("method", param.Method),
+					log.String("request_path", param.Path),
+					log.Int("content_length", param.BodySize),
+					log.String("error_message", param.ErrorMessage),
+				).Info("accesslog")
+			} else {
+				log.C(c).Info(formatter(param))
+			}
 		}
+	}
+}
+
+// Return gin.LoggerConfig which will write the logs to specified io.Writer with given gin.LogFormatter.
+// By default gin.DefaultWriter = os.Stdout
+// reference: https://github.com/gin-gonic/gin#custom-log-format
+func getLoggerConfig(formatter gin.LogFormatter, output io.Writer, skipPaths []string) gin.LoggerConfig {
+	return gin.LoggerConfig{
+		Formatter: formatter,
+		Output:    output,
+		SkipPaths: skipPaths,
 	}
 }

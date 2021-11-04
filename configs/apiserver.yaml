@@ -46,7 +46,7 @@ log:
   # debug, info, warn, error, dpanic, panic, fatal;
   # Default: info
   level: info
-  # console/text, json;
+  # console, json;
   # Default: console
   format: console
   # Default: false

@@ -125,7 +125,7 @@ var (
 	ToContext   = std.ToContext
 	FromContext = std.FromContext
 
-	GetLevelSeted = std.GetLevelSeted
+	GetOptions = std.GetOptions
 
 	C = std.C
 )
@@ -168,7 +168,7 @@ func resetDefaultLogger() {
 	ToContext = std.ToContext
 	FromContext = std.FromContext
 
-	GetLevelSeted = std.GetLevelSeted
+	GetOptions = std.GetOptions
 
 	C = std.C
 }
