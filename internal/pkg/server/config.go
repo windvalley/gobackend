@@ -85,7 +85,6 @@ func LoadConfig(cfg string, defaultName string) {
 	} else {
 		viper.AddConfigPath(".")
 		viper.AddConfigPath(filepath.Join(util.HomeDir(), RecommendedHomeDir))
-		viper.AddConfigPath("/etc/go-web-demo")
 		viper.SetConfigName(defaultName)
 	}
 

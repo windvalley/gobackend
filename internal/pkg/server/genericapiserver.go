@@ -85,10 +85,12 @@ func (s *GenericAPIServer) InstallAPIs() {
 
 // InstallMiddlewares install generic middlewares.
 func (s *GenericAPIServer) InstallMiddlewares() {
-	// necessary middlewares
+	log.Infof("install default middlewares: recovery, logger, requestid, context")
+
+	s.Use(gin.Recovery())
+	s.Use(middleware.Logger())
 	s.Use(middleware.RequestID())
 	s.Use(middleware.Context())
-	// s.Use(limits.RequestSizeLimiter(10))
 
 	// install custom middlewares
 	for _, m := range s.middlewares {
@@ -99,7 +101,7 @@ func (s *GenericAPIServer) InstallMiddlewares() {
 			continue
 		}
 
-		log.Infof("install middleware: %s", m)
+		log.Infof("install custom middleware: %s", m)
 
 		s.Use(mw)
 	}

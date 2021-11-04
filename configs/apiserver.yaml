@@ -7,7 +7,7 @@ server:
   # Default: true
   healthz: true
   # Default: ""
-  middlewares: recovery,logger,secure,nocache,cors
+  middlewares: secure,nocache,cors
   # Self ping check after server start;
   # Default: 3
   max-ping-count: 3
