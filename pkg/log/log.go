@@ -46,7 +46,7 @@ func Init(opts *Options) {
 //
 func SetHooks(hooks ...Hook) {
 	zapLogger := std.zapLogger.WithOptions(zap.Hooks(hooks...))
-	std = newLogger(zapLogger)
+	std = newLogger(zapLogger, std.level)
 	resetDefaultLogger()
 }
 
@@ -150,7 +150,7 @@ func New(opts *Options) *Logger {
 
 	l = l.WithOptions(zap.AddStacktrace(zapcore.PanicLevel), zap.AddCallerSkip(1))
 
-	return newLogger(l)
+	return newLogger(l, level)
 }
 
 // NewStdInfoLogger returns *log.Logger which writes to std.zapLogger at info level.
