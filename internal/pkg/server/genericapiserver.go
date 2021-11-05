@@ -31,6 +31,9 @@ type GenericAPIServer struct {
 	// InsecureServingInfo holds configuration of the insecure HTTP server.
 	InsecureServingInfo *InsecureServingInfo
 
+	// SecureServingInfo holds configuration of the TLS server.
+	SecureServingInfo *SecureServingInfo
+
 	// ShutdownTimeout is the timeout used for server shutdown. This specifies the timeout before server
 	// gracefully shutdown returns.
 	ShutdownTimeout time.Duration
@@ -114,23 +117,32 @@ func (s *GenericAPIServer) Run() error {
 	logOptions := log.GetOptions()
 
 	pid := fmt.Sprintf("%d", syscall.Getpid())
-	address := s.InsecureServingInfo.Address
+	insecureAddress := s.InsecureServingInfo.Address
+	secureAddress := s.SecureServingInfo.Address()
 
 	if logOptions.Format != "json" && !logOptions.DisableColor {
 		pid = color.New(color.BgRed).Sprintf(pid)
-		address = color.New(color.BgCyan).Sprintf(address)
+		insecureAddress = color.New(color.BgCyan).Sprintf(insecureAddress)
+		secureAddress = color.New(color.BgCyan).Sprintf(secureAddress)
 	}
 
 	log.Infof("application pid is %s", pid)
 
 	// For scalability, use custom HTTP configuration mode here
 	s.insecureServer = &http.Server{
-		Addr:    s.InsecureServingInfo.Address,
-		Handler: s,
-		// ReadTimeout:    10 * time.Second,
-		// WriteTimeout:   10 * time.Second,
-		// MaxHeaderBytes: 1 << 20,
+		Addr:           s.InsecureServingInfo.Address,
+		Handler:        s,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
 
+	s.secureServer = &http.Server{
+		Addr:           s.SecureServingInfo.Address(),
+		Handler:        s,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
 	}
 
 	var eg errgroup.Group
@@ -138,13 +150,30 @@ func (s *GenericAPIServer) Run() error {
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below
 	eg.Go(func() error {
-		log.Infof("listening on http address: %s", address)
+		log.Infof("listening on http address: %s", insecureAddress)
 
 		if err := s.insecureServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal(err.Error())
 		}
 
-		log.Infof("server on %s stopped", address)
+		log.Infof("http server on %s stopped", insecureAddress)
+
+		return nil
+	})
+
+	eg.Go(func() error {
+		key, cert := s.SecureServingInfo.TLS.KeyFile, s.SecureServingInfo.TLS.CertFile
+		if cert == "" || key == "" || s.SecureServingInfo.BindPort == 0 {
+			return nil
+		}
+
+		log.Infof("listening on https address: %s", secureAddress)
+
+		if err := s.secureServer.ListenAndServeTLS(cert, key); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatal(err.Error())
+		}
+
+		log.Infof("https server on %s stopped", secureAddress)
 
 		return nil
 	})

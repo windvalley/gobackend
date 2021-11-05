@@ -8,12 +8,12 @@ import (
 	"go-web-backend/internal/app/apiserver/config"
 	"go-web-backend/internal/app/apiserver/store/mysql"
 	genericoptions "go-web-backend/internal/pkg/options"
-	ginserver "go-web-backend/internal/pkg/server"
+	genericserver "go-web-backend/internal/pkg/server"
 )
 
 type apiServer struct {
 	gs               *shutdown.GracefulShutdown
-	genericAPIServer *ginserver.GenericAPIServer
+	genericAPIServer *genericserver.GenericAPIServer
 	mysqlOptions     *genericoptions.MySQLOptions
 }
 
@@ -66,7 +66,6 @@ func (s *apiServer) PrepareRun() preparedAPIServer {
 }
 
 func (s preparedAPIServer) Run() error {
-	// start shutdown managers
 	if err := s.gs.Start(); err != nil {
 		log.Fatalf("start shutdown manager failed: %s", err.Error())
 	}
@@ -74,20 +73,10 @@ func (s preparedAPIServer) Run() error {
 	return s.genericAPIServer.Run()
 }
 
-func buildGenericConfig(cfg *config.Config) (genericConfig *ginserver.Config, lastErr error) {
-	genericConfig = ginserver.NewConfig()
+func buildGenericConfig(cfg *config.Config) (genericConfig *genericserver.Config, lastErr error) {
+	genericConfig = genericserver.NewConfig()
 
-	if lastErr = cfg.GenericServerRunOptions.ApplyTo(genericConfig); lastErr != nil {
-		return
-	}
-
-	if lastErr = cfg.FeatureOptions.ApplyTo(genericConfig); lastErr != nil {
-		return
-	}
-
-	if lastErr = cfg.InsecureServing.ApplyTo(genericConfig); lastErr != nil {
-		return
-	}
+	lastErr = cfg.ApplyTo(genericConfig)
 
 	return
 }

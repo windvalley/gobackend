@@ -19,6 +19,21 @@ insecure:
   # Default: 8080
   bind-port: 8089
 
+# HTTPS
+secure:
+  # Default: 0.0.0.0
+  bind-address: 0.0.0.0
+  # If 0, means disable https;
+  # Default: 8443
+  bind-port: 8443
+  tls:
+    # x509 cert file, if null, will not enable https;
+    # Default: ""
+    cert-file: ./configs/cert/cert.pem
+    # key file;
+    # Default: ""
+    key-file: ./configs/cert/key.pem
+
 # MySQL
 mysql:
   # Default: 127.0.0.1:3306
@@ -59,10 +74,10 @@ log:
   disable-stacktrace: false
   # All log level messages will be writen to;
   # Default: stdout
-  output-paths: stdout,./apiserver.log
+  output-paths: stdout,./log/apiserver.log
   # Only log internal errors will be written to;
   # Default: stderr
-  error-output-paths: stderr,./apiserver.error.log
+  error-output-paths: stderr,./log/apiserver.error.log
   # Rotate log files or not;
   # Default: false
   enable-rotate: true
