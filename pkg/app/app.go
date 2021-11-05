@@ -14,10 +14,11 @@ import (
 	"go-web-demo/pkg/term"
 	"go-web-demo/pkg/version"
 	"go-web-demo/pkg/version/verflag"
+
+	"go-web-demo/internal/app/apiserver/options"
 )
 
 var (
-	progressMessage = color.GreenString("==>")
 	//nolint: deadcode,unused,varcheck
 	usageTemplate = fmt.Sprintf(`%s{{if .Runnable}}
   %s{{end}}{{if .HasAvailableSubCommands}}
@@ -175,7 +176,7 @@ func (a *App) buildCommand() {
 		Args:          a.args,
 	}
 
-	// cmd.SetUsageTemplate(usageTemplate)
+	//cmd.SetUsageTemplate(usageTemplate)
 	cmd.SetOut(os.Stdout)
 	cmd.SetErr(os.Stderr)
 	cmd.Flags().SortFlags = true
@@ -259,17 +260,20 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	log.Init(a.options.(*options.Options).Log)
+	defer log.Sync()
+
 	if !a.silence {
 		printWorkingDir()
 
-		log.Infof("%v Starting %s ...", progressMessage, a.name)
+		log.Infof("Starting %s ...", a.name)
 
 		if !a.noVersion {
-			log.Infof("%v Version: `%s`", progressMessage, version.Get().ToJSON())
+			log.Infof("Version: `%s`", version.Get().ToJSON())
 		}
 
 		if !a.noConfig {
-			log.Infof("%v Config file used: `%s`", progressMessage, viper.ConfigFileUsed())
+			log.Infof("Config file used: `%s`", viper.ConfigFileUsed())
 		}
 	}
 
@@ -298,7 +302,7 @@ func (a *App) applyOptionRules() error {
 	}
 
 	if printableOptions, ok := a.options.(PrintableOptions); ok && !a.silence {
-		log.Infof("%v Config: `%s`", progressMessage, printableOptions.String())
+		log.Infof("Config contents: `%s`", printableOptions.String())
 	}
 
 	return nil
@@ -306,5 +310,5 @@ func (a *App) applyOptionRules() error {
 
 func printWorkingDir() {
 	wd, _ := os.Getwd()
-	log.Infof("%v WorkingDir: %s", progressMessage, wd)
+	log.Infof("Working dir: %s", wd)
 }

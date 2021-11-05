@@ -20,8 +20,8 @@ var cfgFile string
 
 //nolint: gochecknoinits
 func init() {
-	pflag.StringVarP(&cfgFile, "config", "c", cfgFile, "Read configuration from specified `FILE`, "+
-		"support JSON, TOML, YAML, HCL, or Java properties formats.")
+	pflag.StringVarP(&cfgFile, "config", "c", cfgFile, "Read configuration from a specified file, "+
+		"support formats: JSON, TOML, YAML, HCL")
 }
 
 // addConfigFlag adds flags for a specific server to the specified FlagSet object.
@@ -56,7 +56,7 @@ func addConfigFlag(basename string, fs *pflag.FlagSet) {
 func printConfig() {
 	keys := viper.AllKeys()
 	if len(keys) > 0 {
-		fmt.Printf("%v Configuration items:\n", progressMessage)
+		fmt.Println("Configuration items:")
 		table := uitable.New()
 		table.Separator = " "
 		table.MaxColWidth = 80

@@ -37,8 +37,8 @@ type GenericAPIServer struct {
 	healthz         bool
 	enableMetrics   bool
 	enableProfiling bool
-	// wrapper for gin.Engine
 
+	// wrapper for gin.Engine
 	insecureServer, secureServer *http.Server
 }
 
@@ -124,7 +124,7 @@ func (s *GenericAPIServer) Run() error {
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below
 	eg.Go(func() error {
-		log.Infof("Start to listening the incoming requests on http address: %s", s.InsecureServingInfo.Address)
+		log.Infof("start to listening the incoming requests on http address: %s", s.InsecureServingInfo.Address)
 
 		if err := s.insecureServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal(err.Error())
@@ -132,7 +132,7 @@ func (s *GenericAPIServer) Run() error {
 			return err
 		}
 
-		log.Infof("Server on %s stopped", s.InsecureServingInfo.Address)
+		log.Infof("server on %s stopped", s.InsecureServingInfo.Address)
 
 		return nil
 	})
@@ -161,11 +161,11 @@ func (s *GenericAPIServer) Close() {
 	defer cancel()
 
 	if err := s.secureServer.Shutdown(ctx); err != nil {
-		log.Warnf("Shutdown secure server failed: %s", err.Error())
+		log.Warnf("shutdown secure server failed: %s", err.Error())
 	}
 
 	if err := s.insecureServer.Shutdown(ctx); err != nil {
-		log.Warnf("Shutdown insecure server failed: %s", err.Error())
+		log.Warnf("shutdown insecure server failed: %s", err.Error())
 	}
 }
 
@@ -186,7 +186,7 @@ func (s *GenericAPIServer) ping(ctx context.Context) error {
 		// nolint: gosec
 		resp, err := http.DefaultClient.Do(req)
 		if err == nil && resp.StatusCode == http.StatusOK {
-			log.Info("The router has been deployed successfully.")
+			log.Info("the router has been deployed successfully")
 
 			resp.Body.Close()
 
@@ -194,12 +194,12 @@ func (s *GenericAPIServer) ping(ctx context.Context) error {
 		}
 
 		// Sleep for a second to continue the next ping.
-		log.Info("Waiting for the router, retry in 1 second.")
+		log.Info("waiting for the router, retry in 1 second")
 		time.Sleep(1 * time.Second)
 
 		select {
 		case <-ctx.Done():
-			log.Fatal("can not ping http server within the specified time interval.")
+			log.Fatal("can not ping http server within the specified time interval")
 		default:
 		}
 	}

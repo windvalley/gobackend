@@ -2,7 +2,6 @@ package apiserver
 
 import (
 	"go-web-demo/pkg/app"
-	"go-web-demo/pkg/log"
 
 	"go-web-demo/internal/app/apiserver/config"
 	"go-web-demo/internal/app/apiserver/options"
@@ -28,20 +27,13 @@ func NewApp(basename string) *app.App {
 
 func run(opts *options.Options) app.RunFunc {
 	return func(basename string) error {
-		log.Init(opts.Log)
-		defer log.Sync()
-
 		cfg := config.New(opts)
-		return Run(cfg)
-	}
-}
 
-// Run runs the specified APIServer. This should never exit.
-func Run(cfg *config.Config) error {
-	server, err := createAPIServer(cfg)
-	if err != nil {
-		return err
-	}
+		server, err := createAPIServer(cfg)
+		if err != nil {
+			return err
+		}
 
-	return server.PrepareRun().Run()
+		return server.PrepareRun().Run()
+	}
 }
