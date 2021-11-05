@@ -6,7 +6,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 
-	"go-web-demo/internal/app/apiserver/store"
+	"go-web-backend/internal/app/apiserver/store"
 )
 
 func TestNewService(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"go-web-demo/internal/pkg/server"
+	"go-web-backend/internal/pkg/server"
 )
 
 // InsecureServingOptions are for creating an unauthenticated, unauthorized, insecure port.

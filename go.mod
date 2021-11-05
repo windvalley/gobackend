@@ -1,4 +1,4 @@
-module go-web-demo
+module go-web-backend
 
 go 1.16
 

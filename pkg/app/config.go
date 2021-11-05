@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"go-web-demo/pkg/util"
+	"go-web-backend/pkg/util"
 )
 
 const configFlagName = "config"

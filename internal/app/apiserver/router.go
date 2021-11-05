@@ -3,16 +3,16 @@ package apiserver
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/pkg/core"
-	"go-web-demo/pkg/errors"
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/core"
+	"go-web-backend/pkg/errors"
+	"go-web-backend/pkg/log"
 
-	"go-web-demo/internal/app/apiserver/controller/v1/user"
-	"go-web-demo/internal/app/apiserver/store/mysql"
-	"go-web-demo/internal/pkg/code"
+	"go-web-backend/internal/app/apiserver/controller/v1/user"
+	"go-web-backend/internal/app/apiserver/store/mysql"
+	"go-web-backend/internal/pkg/code"
 
 	// Custom gin validators.
-	_ "go-web-demo/internal/pkg/validator"
+	_ "go-web-backend/internal/pkg/validator"
 )
 
 func initRouter(g *gin.Engine) {

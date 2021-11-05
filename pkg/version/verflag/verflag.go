@@ -7,7 +7,7 @@ import (
 
 	flag "github.com/spf13/pflag"
 
-	"go-web-demo/pkg/version"
+	"go-web-backend/pkg/version"
 )
 
 // VersionValue ...

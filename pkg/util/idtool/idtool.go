@@ -6,8 +6,8 @@ import (
 	"github.com/sony/sonyflake"
 	hashids "github.com/speps/go-hashids"
 
-	"go-web-demo/pkg/util/iptool"
-	"go-web-demo/pkg/util/stringtool"
+	"go-web-backend/pkg/util/iptool"
+	"go-web-backend/pkg/util/stringtool"
 )
 
 // Defiens alphabet.

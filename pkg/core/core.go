@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/pkg/errors"
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/errors"
+	"go-web-backend/pkg/log"
 )
 
 // ErrResponse defines the return messages when an error occurred.

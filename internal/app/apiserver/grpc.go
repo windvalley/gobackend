@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/log"
 )
 
 type grpcAPIServer struct {

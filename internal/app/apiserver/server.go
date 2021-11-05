@@ -1,14 +1,14 @@
 package apiserver
 
 import (
-	"go-web-demo/pkg/log"
-	"go-web-demo/pkg/shutdown"
-	"go-web-demo/pkg/shutdown/shutdownmanagers/posixsignal"
+	"go-web-backend/pkg/log"
+	"go-web-backend/pkg/shutdown"
+	"go-web-backend/pkg/shutdown/shutdownmanagers/posixsignal"
 
-	"go-web-demo/internal/app/apiserver/config"
-	"go-web-demo/internal/app/apiserver/store/mysql"
-	genericoptions "go-web-demo/internal/pkg/options"
-	ginserver "go-web-demo/internal/pkg/server"
+	"go-web-backend/internal/app/apiserver/config"
+	"go-web-backend/internal/app/apiserver/store/mysql"
+	genericoptions "go-web-backend/internal/pkg/options"
+	ginserver "go-web-backend/internal/pkg/server"
 )
 
 type apiServer struct {

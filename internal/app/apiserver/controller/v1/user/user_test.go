@@ -6,8 +6,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 
-	srvv1 "go-web-demo/internal/app/apiserver/service/v1"
-	"go-web-demo/internal/app/apiserver/store"
+	srvv1 "go-web-backend/internal/app/apiserver/service/v1"
+	"go-web-backend/internal/app/apiserver/store"
 )
 
 func TestNewUserController(t *testing.T) {

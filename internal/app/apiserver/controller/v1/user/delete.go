@@ -3,9 +3,9 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/pkg/core"
-	"go-web-demo/pkg/log"
-	metav1 "go-web-demo/pkg/meta/v1"
+	"go-web-backend/pkg/core"
+	"go-web-backend/pkg/log"
+	metav1 "go-web-backend/pkg/meta/v1"
 )
 
 // Delete delete an user by the user identifier.

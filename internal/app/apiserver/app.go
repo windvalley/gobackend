@@ -1,10 +1,10 @@
 package apiserver
 
 import (
-	"go-web-demo/pkg/app"
+	"go-web-backend/pkg/app"
 
-	"go-web-demo/internal/app/apiserver/config"
-	"go-web-demo/internal/app/apiserver/options"
+	"go-web-backend/internal/app/apiserver/config"
+	"go-web-backend/internal/app/apiserver/options"
 )
 
 const commandDesc = `Go Web Demo

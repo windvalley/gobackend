@@ -4,11 +4,11 @@ import (
 	ginjwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/internal/pkg/middleware"
+	"go-web-backend/internal/pkg/middleware"
 )
 
 // AuthzAudience defines the value of jwt audience field.
-const AuthzAudience = "go-web-demo"
+const AuthzAudience = "go-web-backend"
 
 // JWTStrategy defines jwt bearer authentication strategy.
 type JWTStrategy struct {

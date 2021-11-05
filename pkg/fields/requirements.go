@@ -1,6 +1,6 @@
 package fields
 
-import "go-web-demo/pkg/selection"
+import "go-web-backend/pkg/selection"
 
 // Requirements is AND of all requirements.
 type Requirements []Requirement

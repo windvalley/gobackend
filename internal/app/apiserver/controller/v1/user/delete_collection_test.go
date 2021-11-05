@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 
-	srvv1 "go-web-demo/internal/app/apiserver/service/v1"
+	srvv1 "go-web-backend/internal/app/apiserver/service/v1"
 )
 
 func TestUserController_DeleteCollection(t *testing.T) {

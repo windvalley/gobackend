@@ -3,7 +3,7 @@ package options
 import (
 	"github.com/spf13/pflag"
 
-	"go-web-demo/internal/pkg/server"
+	"go-web-backend/internal/pkg/server"
 )
 
 // ServerRunOptions contains the options while running a generic api server.

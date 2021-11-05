@@ -3,10 +3,10 @@ package options
 import (
 	"encoding/json"
 
-	genericoptions "go-web-demo/internal/pkg/options"
-	"go-web-demo/internal/pkg/server"
-	cliflag "go-web-demo/pkg/flag"
-	"go-web-demo/pkg/log"
+	genericoptions "go-web-backend/internal/pkg/options"
+	"go-web-backend/internal/pkg/server"
+	cliflag "go-web-backend/pkg/flag"
+	"go-web-backend/pkg/log"
 )
 
 // Options ...

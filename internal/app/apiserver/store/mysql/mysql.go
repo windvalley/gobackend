@@ -6,14 +6,14 @@ import (
 
 	"gorm.io/gorm"
 
-	"go-web-demo/pkg/db"
-	"go-web-demo/pkg/errors"
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/db"
+	"go-web-backend/pkg/errors"
+	"go-web-backend/pkg/log"
 
-	"go-web-demo/internal/app/apiserver/store"
-	v1 "go-web-demo/internal/pkg/entity/apiserver/v1"
-	"go-web-demo/internal/pkg/gormlog"
-	genericoptions "go-web-demo/internal/pkg/options"
+	"go-web-backend/internal/app/apiserver/store"
+	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
+	"go-web-backend/internal/pkg/gormlog"
+	genericoptions "go-web-backend/internal/pkg/options"
 )
 
 type datastore struct {

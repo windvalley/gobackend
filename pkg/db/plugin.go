@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/log"
 )
 
 const (

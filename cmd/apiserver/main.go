@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"time"
 
-	"go-web-demo/internal/app/apiserver"
+	"go-web-backend/internal/app/apiserver"
 )
 
 func main() {

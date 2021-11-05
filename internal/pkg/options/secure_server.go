@@ -48,8 +48,8 @@ func NewSecureServingOptions() *SecureServingOptions {
 		BindPort:    8443,
 		Required:    true,
 		ServerCert: GeneratableKeyCert{
-			PairName:      "go-web-demo",
-			CertDirectory: "/var/run/go-web-demo",
+			PairName:      "go-web-backend",
+			CertDirectory: "/var/run/go-web-backend",
 		},
 	}
 }

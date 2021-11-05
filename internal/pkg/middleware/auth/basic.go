@@ -6,11 +6,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/pkg/core"
-	"go-web-demo/pkg/errors"
+	"go-web-backend/pkg/core"
+	"go-web-backend/pkg/errors"
 
-	"go-web-demo/internal/pkg/code"
-	"go-web-demo/internal/pkg/middleware"
+	"go-web-backend/internal/pkg/code"
+	"go-web-backend/internal/pkg/middleware"
 )
 
 // BasicStrategy defines Basic authentication strategy.

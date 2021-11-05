@@ -3,9 +3,9 @@ package store
 import (
 	"context"
 
-	metav1 "go-web-demo/pkg/meta/v1"
+	metav1 "go-web-backend/pkg/meta/v1"
 
-	v1 "go-web-demo/internal/pkg/entity/apiserver/v1"
+	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
 )
 
 // UserStore defines the user storage interface.

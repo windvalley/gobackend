@@ -9,10 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 
-	metav1 "go-web-demo/pkg/meta/v1"
+	metav1 "go-web-backend/pkg/meta/v1"
 
-	srvv1 "go-web-demo/internal/app/apiserver/service/v1"
-	v1 "go-web-demo/internal/pkg/entity/apiserver/v1"
+	srvv1 "go-web-backend/internal/app/apiserver/service/v1"
+	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
 )
 
 func TestUserController_Update(t *testing.T) {

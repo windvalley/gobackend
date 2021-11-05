@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-web-demo/pkg/log"
+	"go-web-backend/pkg/log"
 )
 
 // UsernameKey defines the key in gin context which represents the owner of the secret.

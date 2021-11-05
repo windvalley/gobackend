@@ -3,7 +3,7 @@ package v1
 import (
 	"time"
 
-	"go-web-demo/pkg/json"
+	"go-web-backend/pkg/json"
 )
 
 // TypeMeta describes an individual object in an API response or request
