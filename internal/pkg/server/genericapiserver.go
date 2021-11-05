@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"syscall"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
@@ -109,6 +111,18 @@ func (s *GenericAPIServer) InstallMiddlewares() {
 
 // Run spawns the http server. It only returns when the port cannot be listened on initially.
 func (s *GenericAPIServer) Run() error {
+	logOptions := log.GetOptions()
+
+	pid := fmt.Sprintf("%d", syscall.Getpid())
+	address := s.InsecureServingInfo.Address
+
+	if logOptions.Format != "json" && !logOptions.DisableColor {
+		pid = color.New(color.BgRed).Sprintf(pid)
+		address = color.New(color.BgCyan).Sprintf(address)
+	}
+
+	log.Infof("application pid is %s", pid)
+
 	// For scalability, use custom HTTP configuration mode here
 	s.insecureServer = &http.Server{
 		Addr:    s.InsecureServingInfo.Address,
@@ -124,15 +138,13 @@ func (s *GenericAPIServer) Run() error {
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below
 	eg.Go(func() error {
-		log.Infof("start to listening the incoming requests on http address: %s", s.InsecureServingInfo.Address)
+		log.Infof("listening on http address: %s", address)
 
 		if err := s.insecureServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal(err.Error())
-
-			return err
 		}
 
-		log.Infof("server on %s stopped", s.InsecureServingInfo.Address)
+		log.Infof("server on %s stopped", address)
 
 		return nil
 	})
