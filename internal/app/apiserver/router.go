@@ -34,16 +34,15 @@ func installController(g *gin.Engine) *gin.Engine {
 
 	v1 := g.Group("/v1")
 	{
-		// user RESTful resource
 		userv1 := v1.Group("/users")
 		{
 			userController := user.NewUserController(storeIns)
 
 			userv1.POST("", userController.Create)
-			userv1.DELETE("", userController.DeleteCollection) // admin api
-			userv1.DELETE(":name", userController.Delete)      // admin api
+			userv1.DELETE("", userController.DeleteCollection)
+			userv1.DELETE(":name", userController.Delete)
 			userv1.PUT(":name", userController.Update)
-			userv1.GET(":name", userController.Get) // admin api
+			userv1.GET(":name", userController.Get)
 		}
 	}
 

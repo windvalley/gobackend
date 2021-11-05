@@ -2,7 +2,6 @@ package user
 
 import (
 	srvv1 "go-web-demo/internal/app/apiserver/service/v1"
-
 	"go-web-demo/internal/app/apiserver/store"
 )
 

@@ -25,7 +25,7 @@ type ErrResponse struct {
 }
 
 // WriteResponse write an error or the response data into http response body.
-// It use errors.ParseCoder to parse any error into errors.Coder
+// It use errors.ParseCoder to parse any error into errors.Coder,
 // errors.Coder contains error code, user-safe error message and http status code.
 func WriteResponse(c *gin.Context, err error, data interface{}) {
 	if err != nil {

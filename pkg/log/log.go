@@ -139,7 +139,7 @@ func New(opts *Options) *Logger {
 	}
 
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
-	if format == consoleFormat || format == "text" {
+	if format == consoleFormat {
 		encoder = zapcore.NewConsoleEncoder(encoderConfig)
 	}
 
