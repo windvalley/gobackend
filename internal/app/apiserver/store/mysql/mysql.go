@@ -51,6 +51,7 @@ func GetMysqlFactory() store.Factory {
 func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 	var err error
 	var dbIns *gorm.DB
+
 	once.Do(func() {
 		options := &db.Options{
 			Host:                  opts.Host,
@@ -59,22 +60,33 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 			Database:              opts.Database,
 			MaxIdleConnections:    opts.MaxIdleConnections,
 			MaxOpenConnections:    opts.MaxOpenConnections,
-			MaxConnectionLifeTime: opts.MaxConnectionLifeTime,
+			MaxConnectionLifetime: opts.MaxConnectionLifetime,
 			LogLevel:              opts.LogLevel,
 			Logger:                gormlog.New(opts.LogLevel),
 		}
 
 		dbIns, err = db.New(options)
+		if err != nil {
+			return
+		}
 
-		// uncomment the following line if you need auto migration the given models
+		log.Info("start auto migrate mysql database ...")
 		// not suggested in production environment.
-		// migrateDatabase(dbIns)
+		err = migrateDatabase(dbIns)
+		if err != nil {
+			err = fmt.Errorf("migrate database failed: %w", err)
+			return
+		}
 
 		mysqlFactory = &datastore{dbIns}
 	})
 
 	if mysqlFactory == nil || err != nil {
-		return fmt.Errorf("failed to get mysql store fatory, mysqlFactory: %+v, error: %w", mysqlFactory, err)
+		return fmt.Errorf(
+			"failed to init mysql factory, mysqlFactory: %+v, error: %w",
+			mysqlFactory,
+			err,
+		)
 	}
 
 	store.SetClient(mysqlFactory)
@@ -98,11 +110,9 @@ func cleanDatabase(db *gorm.DB) error {
 // won't delete/change current data.
 // nolint:unused // may be reused in the feature, or just show a migrate usage.
 func migrateDatabase(db *gorm.DB) error {
-	if err := db.AutoMigrate(&v1.User{}); err != nil {
-		return errors.Wrap(err, "migrate user model failed")
-	}
-
-	return nil
+	return db.AutoMigrate(
+		&v1.User{},
+	)
 }
 
 // resetDatabase resets the database tables.

@@ -48,8 +48,9 @@ mysql:
   max-idle-connections: 100
   # Default: 100
   max-open-connections: 100
+  # in seconds
   # Default: 10
-  max-connection-life-time: 10s
+  max-connection-lifetime: 10
   # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
   # Default: 1
   log-level: 4
@@ -74,10 +75,10 @@ log:
   disable-stacktrace: false
   # All log level messages will be writen to;
   # Default: stdout
-  output-paths: stdout,./log/apiserver.log
+  output-paths: stdout,./logs/apiserver.log
   # Only log internal errors will be written to;
   # Default: stderr
-  error-output-paths: stderr,./log/apiserver.error.log
+  error-output-paths: stderr,./logs/apiserver.error.log
   # Rotate log files or not;
   # Default: false
   enable-rotate: true

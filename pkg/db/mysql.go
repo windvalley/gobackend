@@ -17,7 +17,7 @@ type Options struct {
 	Database              string
 	MaxIdleConnections    int
 	MaxOpenConnections    int
-	MaxConnectionLifeTime time.Duration
+	MaxConnectionLifetime time.Duration
 	LogLevel              int
 	Logger                logger.Interface
 }
@@ -48,7 +48,7 @@ func New(opts *Options) (*gorm.DB, error) {
 	sqlDB.SetMaxOpenConns(opts.MaxOpenConnections)
 
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifeTime)
+	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifetime * time.Second)
 
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 	sqlDB.SetMaxIdleConns(opts.MaxIdleConnections)

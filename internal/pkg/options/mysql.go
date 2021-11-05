@@ -14,7 +14,7 @@ type MySQLOptions struct {
 	Database              string        `json:"database"                           mapstructure:"database"`
 	MaxIdleConnections    int           `json:"max-idle-connections,omitempty"     mapstructure:"max-idle-connections"`
 	MaxOpenConnections    int           `json:"max-open-connections,omitempty"     mapstructure:"max-open-connections"`
-	MaxConnectionLifeTime time.Duration `json:"max-connection-life-time,omitempty" mapstructure:"max-connection-life-time"`
+	MaxConnectionLifetime time.Duration `json:"max-connection-lifetime,omitempty"  mapstructure:"max-connection-lifetime"`
 	LogLevel              int           `json:"log-level"                          mapstructure:"log-level"`
 }
 
@@ -27,7 +27,7 @@ func NewMySQLOptions() *MySQLOptions {
 		Database:              "",
 		MaxIdleConnections:    100,
 		MaxOpenConnections:    100,
-		MaxConnectionLifeTime: time.Duration(10) * time.Second,
+		MaxConnectionLifetime: time.Duration(10) * time.Second,
 		LogLevel:              1, // Silent
 	}
 }
@@ -59,8 +59,8 @@ func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.IntVar(&o.MaxOpenConnections, "mysql.max-open-connections", o.MaxOpenConnections, ""+
 		"Maximum open connections allowed to connect to mysql.")
 
-	fs.DurationVar(&o.MaxConnectionLifeTime, "mysql.max-connection-life-time", o.MaxConnectionLifeTime, ""+
-		"Maximum connection life time allowed to connecto to mysql.")
+	fs.DurationVar(&o.MaxConnectionLifetime, "mysql.max-connection-lifetime", o.MaxConnectionLifetime, ""+
+		"Maximum connection life time allowed to connect to mysql.")
 
 	fs.IntVar(&o.LogLevel, "mysql.log-mode", o.LogLevel, ""+
 		"Specify gorm log level.")
