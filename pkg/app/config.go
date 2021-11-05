@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -46,7 +47,7 @@ func addConfigFlag(basename string, fs *pflag.FlagSet) {
 		}
 
 		if err := viper.ReadInConfig(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error: failed to read configuration file(%s): %v\n", cfgFile, err)
+			_, _ = fmt.Fprintf(os.Stderr, "%s read config file failed: %s\n", color.RedString("Error:"), err)
 			os.Exit(1)
 		}
 	})
