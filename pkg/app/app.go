@@ -170,7 +170,7 @@ func (a *App) buildCommand() {
 		Use:   FormatBaseName(a.basename),
 		Short: a.name,
 		Long:  a.description,
-		// stop printing usage when the command errors
+		// Stop printing usage when the command errors or not.
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Args:          a.args,
@@ -249,6 +249,8 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		// display application version information
 		verflag.PrintAndExitIfRequested()
 	}
+
+	parseConfigFile(a.basename)
 
 	if !a.noConfig {
 		if err := viper.BindPFlags(cmd.Flags()); err != nil {

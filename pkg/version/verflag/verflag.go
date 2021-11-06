@@ -20,6 +20,12 @@ const (
 	VersionRaw   VersionValue = 2
 )
 
+// version flag
+const (
+	versionFlagName      = "version"
+	versionFlagShortName = "V"
+)
+
 const strRawVersion string = "raw"
 
 // IsBoolFlag ...
@@ -60,23 +66,21 @@ func (v *VersionValue) Type() string {
 }
 
 // VersionVar defines a flag with the specified name and usage string.
-func VersionVar(p *VersionValue, name string, value VersionValue, usage string) {
+func VersionVar(p *VersionValue, name, shortName string, value VersionValue, usage string) {
 	*p = value
-	flag.Var(p, name, usage)
+	flag.VarP(p, name, shortName, usage)
 	// "--version" will be treated as "--version=true"
 	flag.Lookup(name).NoOptDefVal = "true"
 }
 
 // Version wraps the VersionVar function.
-func Version(name string, value VersionValue, usage string) *VersionValue {
+func Version(name, shortName string, value VersionValue, usage string) *VersionValue {
 	p := new(VersionValue)
-	VersionVar(p, name, value, usage)
+	VersionVar(p, name, shortName, value, usage)
 	return p
 }
 
-const versionFlagName = "version"
-
-var versionFlag = Version(versionFlagName, VersionFalse, "Print version information and quit.")
+var versionFlag = Version(versionFlagName, versionFlagShortName, VersionFalse, "Print version information and quit.")
 
 // AddFlags registers this package's flags on arbitrary FlagSets, such that they point to the
 // same value as the global flags.
