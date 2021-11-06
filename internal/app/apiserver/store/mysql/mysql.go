@@ -75,6 +75,7 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 		err = migrateDatabase(dbIns)
 		if err != nil {
 			err = fmt.Errorf("migrate database failed: %w", err)
+
 			return
 		}
 

@@ -42,7 +42,6 @@ type defaultCoder struct {
 // Code returns the integer code of the coder.
 func (coder defaultCoder) Code() int {
 	return coder.C
-
 }
 
 // String implements stringer. String returns the external error message,

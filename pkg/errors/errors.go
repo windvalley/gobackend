@@ -130,8 +130,10 @@ func (f *fundamental) Format(s fmt.State, verb rune) {
 		if s.Flag('+') {
 			_, _ = io.WriteString(s, f.msg)
 			f.stack.Format(s, verb)
+
 			return
 		}
+
 		fallthrough
 	case 's':
 		_, _ = io.WriteString(s, f.msg)

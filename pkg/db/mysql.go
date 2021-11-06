@@ -47,6 +47,7 @@ func New(opts *Options) (*gorm.DB, error) {
 	// SetMaxOpenConns sets the maximum number of open connections to the database.
 	sqlDB.SetMaxOpenConns(opts.MaxOpenConnections)
 
+	//nolint:durationcheck
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifetime * time.Second)
 

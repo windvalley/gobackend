@@ -132,7 +132,6 @@ func format(k int, jsonData []map[string]interface{}, str *bytes.Buffer, finfo *
 			} else {
 				fmt.Fprintf(str, "%s%s - #%d %s", sep, finfo.err, k, finfo.message)
 			}
-
 		} else {
 			fmt.Fprintf(str, finfo.message)
 		}
