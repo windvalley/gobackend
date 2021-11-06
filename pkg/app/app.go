@@ -221,7 +221,7 @@ func (a *App) buildCommand() {
 	}
 
 	if !a.noConfig {
-		addConfigFlag(a.basename, namedFlagSets.FlagSet("global"))
+		addConfigFlag(namedFlagSets.FlagSet("global"))
 	}
 
 	cliflag.AddGlobalFlags(namedFlagSets.FlagSet("global"), cmd.Name())

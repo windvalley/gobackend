@@ -24,10 +24,9 @@ func init() {
 		"support formats: JSON, TOML, YAML, HCL")
 }
 
-// addConfigFlag adds flags for a specific server to the specified FlagSet object.
-func addConfigFlag(basename string, fs *pflag.FlagSet) {
+// addConfigFlag for a specific server to the specified FlagSet object.
+func addConfigFlag(fs *pflag.FlagSet) {
 	fs.AddFlag(pflag.Lookup(configFlagName))
-
 }
 
 func parseConfigFile(basename string) {
