@@ -153,7 +153,7 @@ func New(opts *Options) *Logger {
 	return newLogger(l, opts)
 }
 
-// NewStdInfoLogger returns *log.Logger which writes to std.zapLogger at info level.
+// NewStdInfoLogger returns *log.Logger(Go standard library 'log') which writes to std.zapLogger at info level.
 func NewStdInfoLogger() *log.Logger {
 	if std == nil {
 		return nil
