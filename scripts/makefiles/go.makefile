@@ -22,10 +22,6 @@ endif
 
 GO_BUILD_FLAGS += -tags=jsoniter -ldflags "${GO_LDFLAGS}"
 
-ifeq (${GOOS}, windows)
-	GO_BIN_EXT := .exe
-endif
-
 ifeq (${ROOT_PACKAGE},)
 	$(error the variable ROOT_PACKAGE must be set)
 endif
@@ -60,7 +56,8 @@ go.build.%:
 	$(eval PLATFORM := $(word 1,$(subst ., ,$*)))
 	$(eval OS := $(word 1,$(subst _, ,${PLATFORM})))
 	$(eval ARCH := $(word 2,$(subst _, ,${PLATFORM})))
-	@echo "===========> Building binary ${COMMAND} ${VERSION} for ${OS} ${ARCH}"
+	$(eval GO_BIN_EXT = $(if $(findstring windows,${OS}),.exe,))
+	@echo "===========> Building binary '${COMMAND}${GO_BIN_EXT}' ${VERSION} for ${OS} ${ARCH}"
 	@mkdir -p ${OUTPUT_DIR}/platforms/${OS}/${ARCH}
 	@CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} ${GO} build ${GO_BUILD_FLAGS} -o ${OUTPUT_DIR}/platforms/${OS}/${ARCH}/${COMMAND}${GO_BIN_EXT} ${ROOT_PACKAGE}/cmd/${COMMAND}
 
