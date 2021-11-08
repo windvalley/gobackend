@@ -1,6 +1,6 @@
 package v1
 
-import "go-web-backend/internal/app/apiserver/store"
+import "gobackend/internal/app/apiserver/store"
 
 // Service defines functions used to return resource interface.
 type Service interface {

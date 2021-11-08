@@ -13,7 +13,7 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIR" || exit 1
 
 [[ -z "$1" ]] && {
-    echo Usage: "$0" new_project_name
+    echo Usage: "$0" new-project-name
     exit 1
 }
 
@@ -24,7 +24,10 @@ SED="sed"
 [[ $(uname) = "Darwin" ]] && SED=gsed
 
 # shellcheck disable=SC2038
-find ../ -type f -name "*.go" -o -name "go.mod" |
+find ../ -type f -name "*.go" -o -name "go.mod" -o -name "*.makefile" \
+    -o -name "*.md" -o -name "*.sh" |
     xargs $SED -i "s#${CURRENT_PROJECT_NAME}#${NEW_PROJECT_NAME}#"
+
+mv ../cmd/{"${CURRENT_PROJECT_NAME}"-apiserver,"${NEW_PROJECT_NAME}"-apiserver}
 
 exit 0

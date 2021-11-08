@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"go-web-backend/pkg/errors"
-	"go-web-backend/pkg/util/sets"
+	"gobackend/pkg/errors"
+	"gobackend/pkg/util/sets"
 )
 
 // Error is an implementation of the 'error' interface, which represents a

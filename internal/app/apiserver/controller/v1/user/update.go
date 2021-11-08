@@ -3,13 +3,13 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-web-backend/pkg/core"
-	"go-web-backend/pkg/errors"
-	"go-web-backend/pkg/log"
-	metav1 "go-web-backend/pkg/meta/v1"
+	"gobackend/pkg/core"
+	"gobackend/pkg/errors"
+	"gobackend/pkg/log"
+	metav1 "gobackend/pkg/meta/v1"
 
-	"go-web-backend/internal/pkg/code"
-	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
+	"gobackend/internal/pkg/code"
+	v1 "gobackend/internal/pkg/entity/apiserver/v1"
 )
 
 // Update update a user info by the user identifier.

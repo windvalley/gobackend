@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 
-	"go-web-backend/pkg/validation"
+	"gobackend/pkg/validation"
 )
 
 // validateUsername checks if a given username is illegal.

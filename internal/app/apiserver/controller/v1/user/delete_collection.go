@@ -3,9 +3,9 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-web-backend/pkg/core"
-	"go-web-backend/pkg/log"
-	metav1 "go-web-backend/pkg/meta/v1"
+	"gobackend/pkg/core"
+	"gobackend/pkg/log"
+	metav1 "gobackend/pkg/meta/v1"
 )
 
 // DeleteCollection batch delete users by multiple usernames.

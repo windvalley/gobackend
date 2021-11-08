@@ -3,7 +3,7 @@ package v1
 import (
 	"time"
 
-	"go-web-backend/pkg/scheme"
+	"gobackend/pkg/scheme"
 )
 
 // ObjectMetaAccessor ...

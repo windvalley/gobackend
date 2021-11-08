@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"go-web-backend/pkg/validation/field"
+	"gobackend/pkg/validation/field"
 )
 
 func TestIsDNS1123Label(t *testing.T) {

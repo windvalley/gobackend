@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"go-web-backend/pkg/validation"
-	"go-web-backend/pkg/validation/field"
+	"gobackend/pkg/validation"
+	"gobackend/pkg/validation/field"
 )
 
 // Validate user object is valid.

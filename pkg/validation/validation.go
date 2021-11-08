@@ -10,7 +10,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/go-playground/validator/v10/translations/en"
 
-	"go-web-backend/pkg/validation/field"
+	"gobackend/pkg/validation/field"
 )
 
 const (

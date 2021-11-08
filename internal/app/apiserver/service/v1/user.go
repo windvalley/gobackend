@@ -3,12 +3,12 @@ package v1
 import (
 	"context"
 
-	"go-web-backend/internal/app/apiserver/store"
-	"go-web-backend/internal/pkg/code"
-	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
+	"gobackend/internal/app/apiserver/store"
+	"gobackend/internal/pkg/code"
+	v1 "gobackend/internal/pkg/entity/apiserver/v1"
 
-	"go-web-backend/pkg/errors"
-	metav1 "go-web-backend/pkg/meta/v1"
+	"gobackend/pkg/errors"
+	metav1 "gobackend/pkg/meta/v1"
 )
 
 // UserSrv defines functions used to handle user request.

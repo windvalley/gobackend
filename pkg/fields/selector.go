@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"go-web-backend/pkg/selection"
+	"gobackend/pkg/selection"
 )
 
 // Selector represents a field selector.

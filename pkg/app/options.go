@@ -1,6 +1,6 @@
 package app
 
-import cliflag "go-web-backend/pkg/flag"
+import cliflag "gobackend/pkg/flag"
 
 // CliOptions abstracts configuration options for reading parameters from the
 // command line.

@@ -5,13 +5,13 @@ import (
 
 	gorm "gorm.io/gorm"
 
-	"go-web-backend/pkg/errors"
-	"go-web-backend/pkg/fields"
-	metav1 "go-web-backend/pkg/meta/v1"
-	"go-web-backend/pkg/util/gormtool"
+	"gobackend/pkg/errors"
+	"gobackend/pkg/fields"
+	metav1 "gobackend/pkg/meta/v1"
+	"gobackend/pkg/util/gormtool"
 
-	"go-web-backend/internal/pkg/code"
-	v1 "go-web-backend/internal/pkg/entity/apiserver/v1"
+	"gobackend/internal/pkg/code"
+	v1 "gobackend/internal/pkg/entity/apiserver/v1"
 )
 
 type users struct {

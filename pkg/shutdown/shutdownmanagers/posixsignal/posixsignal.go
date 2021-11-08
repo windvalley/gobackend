@@ -5,7 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"go-web-backend/pkg/shutdown"
+	"gobackend/pkg/shutdown"
 )
 
 // Name defines shutdown manager name.

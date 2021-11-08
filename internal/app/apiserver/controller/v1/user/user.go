@@ -1,8 +1,8 @@
 package user
 
 import (
-	srvv1 "go-web-backend/internal/app/apiserver/service/v1"
-	"go-web-backend/internal/app/apiserver/store"
+	srvv1 "gobackend/internal/app/apiserver/service/v1"
+	"gobackend/internal/app/apiserver/store"
 )
 
 // Controller create a user handler used to handle request for user resource.

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode"
 
-	"go-web-backend/pkg/validation/field"
+	"gobackend/pkg/validation/field"
 )
 
 const (

@@ -5,10 +5,10 @@ import (
 
 	"github.com/novalagung/gubrak"
 
-	"go-web-backend/pkg/errors"
+	"gobackend/pkg/errors"
 )
 
-// ErrCode implements `go-web-backend/pkg/errors`.Coder interface.
+// ErrCode implements `gobackend/pkg/errors`.Coder interface.
 type ErrCode struct {
 	// C refers to the code of the ErrCode.
 	C int

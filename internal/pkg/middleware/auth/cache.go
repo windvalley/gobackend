@@ -7,11 +7,11 @@ import (
 	jwt "github.com/dgrijalva/jwt-go/v4"
 	"github.com/gin-gonic/gin"
 
-	"go-web-backend/pkg/core"
-	"go-web-backend/pkg/errors"
+	"gobackend/pkg/core"
+	"gobackend/pkg/errors"
 
-	"go-web-backend/internal/pkg/code"
-	"go-web-backend/internal/pkg/middleware"
+	"gobackend/internal/pkg/code"
+	"gobackend/internal/pkg/middleware"
 )
 
 // Defined errors.

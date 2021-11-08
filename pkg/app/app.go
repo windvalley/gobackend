@@ -8,14 +8,14 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"go-web-backend/pkg/errors"
-	cliflag "go-web-backend/pkg/flag"
-	"go-web-backend/pkg/log"
-	"go-web-backend/pkg/term"
-	"go-web-backend/pkg/version"
-	"go-web-backend/pkg/version/verflag"
+	"gobackend/pkg/errors"
+	cliflag "gobackend/pkg/flag"
+	"gobackend/pkg/log"
+	"gobackend/pkg/term"
+	"gobackend/pkg/version"
+	"gobackend/pkg/version/verflag"
 
-	"go-web-backend/internal/app/apiserver/options"
+	"gobackend/internal/app/apiserver/options"
 )
 
 var (
