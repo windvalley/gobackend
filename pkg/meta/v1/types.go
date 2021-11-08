@@ -205,6 +205,7 @@ type Extend map[string]interface{}
 // String returns the string format of Extend.
 func (ext Extend) String() string {
 	data, _ := json.Marshal(ext)
+
 	return string(data)
 }
 

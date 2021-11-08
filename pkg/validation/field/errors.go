@@ -30,8 +30,9 @@ func (v *Error) Error() string {
 // for building nice-looking higher-level error reporting.
 func (v *Error) ErrorBody() string {
 	var s string
-	switch v.Type {
+
 	//nolint: exhaustive
+	switch v.Type {
 	case ErrorTypeRequired, ErrorTypeForbidden, ErrorTypeTooLong, ErrorTypeInternal:
 		s = v.Type.String()
 	default:
@@ -66,6 +67,7 @@ func (v *Error) ErrorBody() string {
 	if len(v.Detail) != 0 {
 		s += fmt.Sprintf(": %s", v.Detail)
 	}
+
 	return s
 }
 

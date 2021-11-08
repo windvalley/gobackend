@@ -61,6 +61,7 @@ func (gr GroupResource) String() string {
 	if len(gr.Group) == 0 {
 		return gr.Resource
 	}
+
 	return gr.Resource + "." + gr.Group
 }
 
@@ -80,6 +81,7 @@ func ParseGroupResource(gr string) GroupResource {
 	if i := strings.Index(gr, "."); i >= 0 {
 		return GroupResource{Group: gr[i+1:], Resource: gr[:i]}
 	}
+
 	return GroupResource{Resource: gr}
 }
 
@@ -133,6 +135,7 @@ func (gk GroupKind) String() string {
 	if len(gk.Group) == 0 {
 		return gk.Kind
 	}
+
 	return gk.Kind + "." + gk.Group
 }
 
@@ -181,6 +184,7 @@ func (gv GroupVersion) String() string {
 	if len(gv.Group) > 0 {
 		return gv.Group + "/" + gv.Version
 	}
+
 	return gv.Version
 }
 
@@ -205,6 +209,7 @@ func (gv GroupVersion) KindForGroupVersionKinds(kinds []GroupVersionKind) (targe
 			return gv.WithKind(gvk.Kind), true
 		}
 	}
+
 	return GroupVersionKind{}, false
 }
 
@@ -222,6 +227,7 @@ func ParseGroupVersion(gv string) (GroupVersion, error) {
 		return GroupVersion{"", gv}, nil
 	case 1:
 		i := strings.Index(gv, "/")
+
 		return GroupVersion{gv[:i], gv[i+1:]}, nil
 	default:
 		return GroupVersion{}, fmt.Errorf("unexpected GroupVersion string: %v", gv)
@@ -250,6 +256,7 @@ func (gvs GroupVersions) Identifier() string {
 	for i := range gvs {
 		groupVersions = append(groupVersions, gvs[i].String())
 	}
+
 	return fmt.Sprintf("[%s]", strings.Join(groupVersions, ","))
 }
 
@@ -271,6 +278,7 @@ func (gvs GroupVersions) KindForGroupVersionKinds(kinds []GroupVersionKind) (Gro
 	if len(targets) > 1 {
 		return bestMatch(kinds, targets), true
 	}
+
 	return GroupVersionKind{}, false
 }
 
@@ -284,6 +292,7 @@ func bestMatch(kinds []GroupVersionKind, targets []GroupVersionKind) GroupVersio
 			}
 		}
 	}
+
 	return targets[0]
 }
 
@@ -293,6 +302,7 @@ func (gvk GroupVersionKind) ToAPIVersionAndKind() (string, string) {
 	if gvk.Empty() {
 		return "", ""
 	}
+
 	return gvk.GroupVersion().String(), gvk.Kind
 }
 
@@ -304,5 +314,6 @@ func FromAPIVersionAndKind(apiVersion, kind string) GroupVersionKind {
 	if gv, err := ParseGroupVersion(apiVersion); err == nil {
 		return GroupVersionKind{Group: gv.Group, Version: gv.Version, Kind: kind}
 	}
+
 	return GroupVersionKind{Kind: kind}
 }

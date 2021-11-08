@@ -67,6 +67,7 @@ func IsQualifiedName(value string) []string {
 			"name part "+RegexError(qualifiedNameErrMsg, qualifiedNameFmt, "MyName", "my.name", "123-abc"),
 		)
 	}
+
 	return errs
 }
 
@@ -90,6 +91,7 @@ func IsValidLabelValue(value string) []string {
 	if !labelValueRegexp.MatchString(value) {
 		errs = append(errs, RegexError(labelValueErrMsg, labelValueFmt, "MyValue", "my_value", "12345"))
 	}
+
 	return errs
 }
 
@@ -112,6 +114,7 @@ func IsDNS1123Label(value string) []string {
 	if !dns1123LabelRegexp.MatchString(value) {
 		errs = append(errs, RegexError(dns1123LabelErrMsg, dns1123LabelFmt, "my-name", "123-abc"))
 	}
+
 	return errs
 }
 
@@ -134,6 +137,7 @@ func IsDNS1123Subdomain(value string) []string {
 	if !dns1123SubdomainRegexp.MatchString(value) {
 		errs = append(errs, RegexError(dns1123SubdomainErrorMsg, dns1123SubdomainFmt, "example.com"))
 	}
+
 	return errs
 }
 
@@ -142,6 +146,7 @@ func IsValidPortNum(port int) []string {
 	if 1 <= port && port <= 65535 {
 		return nil
 	}
+
 	return []string{InclusiveRangeError(1, 65535)}
 }
 
@@ -150,6 +155,7 @@ func IsInRange(value int, min int, max int) []string {
 	if value >= min && value <= max {
 		return nil
 	}
+
 	return []string{InclusiveRangeError(min, max)}
 }
 
@@ -158,6 +164,7 @@ func IsValidIP(value string) []string {
 	if net.ParseIP(value) == nil {
 		return []string{"must be a valid IP address, (e.g. 10.9.8.7)"}
 	}
+
 	return nil
 }
 
@@ -168,6 +175,7 @@ func IsValidIPv4Address(fldPath *field.Path, value string) field.ErrorList {
 	if ip == nil || ip.To4() == nil {
 		allErrors = append(allErrors, field.Invalid(fldPath, value, "must be a valid IPv4 address"))
 	}
+
 	return allErrors
 }
 
@@ -178,6 +186,7 @@ func IsValidIPv6Address(fldPath *field.Path, value string) field.ErrorList {
 	if ip == nil || ip.To4() != nil {
 		allErrors = append(allErrors, field.Invalid(fldPath, value, "must be a valid IPv6 address"))
 	}
+
 	return allErrors
 }
 
@@ -193,6 +202,7 @@ func IsValidPercent(percent string) []string {
 	if !percentRegexp.MatchString(percent) {
 		return []string{RegexError(percentErrMsg, percentFmt, "1%", "93%")}
 	}
+
 	return nil
 }
 
@@ -215,6 +225,7 @@ func RegexError(msg string, fmt string, examples ...string) string {
 		msg += "'" + examples[i] + "', "
 	}
 	msg += "regex used for validation is '" + fmt + "')"
+
 	return msg
 }
 
@@ -228,6 +239,7 @@ func prefixEach(msgs []string, prefix string) []string {
 	for i := range msgs {
 		msgs[i] = prefix + msgs[i]
 	}
+
 	return msgs
 }
 

@@ -26,12 +26,14 @@ func (ls Set) String() string {
 	}
 	// Sort for determinism.
 	sort.StringSlice(selector).Sort()
+
 	return strings.Join(selector, ",")
 }
 
 // Has returns whether the provided field exists in the map.
 func (ls Set) Has(field string) bool {
 	_, exists := ls[field]
+
 	return exists
 }
 

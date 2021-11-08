@@ -42,14 +42,17 @@ func (v *VersionValue) Get() interface{} {
 func (v *VersionValue) Set(s string) error {
 	if s == strRawVersion {
 		*v = VersionRaw
+
 		return nil
 	}
+
 	boolVal, err := strconv.ParseBool(s)
 	if boolVal {
 		*v = VersionTrue
 	} else {
 		*v = VersionFalse
 	}
+
 	return err
 }
 
@@ -57,6 +60,7 @@ func (v *VersionValue) String() string {
 	if *v == VersionRaw {
 		return strRawVersion
 	}
+
 	return fmt.Sprintf("%v", bool(*v == VersionTrue))
 }
 
@@ -77,6 +81,7 @@ func VersionVar(p *VersionValue, name, shortName string, value VersionValue, usa
 func Version(name, shortName string, value VersionValue, usage string) *VersionValue {
 	p := new(VersionValue)
 	VersionVar(p, name, shortName, value, usage)
+
 	return p
 }
 
