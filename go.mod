@@ -16,7 +16,6 @@ require (
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.7.0
-	github.com/golang/mock v1.6.0
 	github.com/gosuri/uitable v0.0.4
 	github.com/jinzhu/now v1.1.2
 	github.com/json-iterator/go v1.1.11
