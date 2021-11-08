@@ -1,5 +1,6 @@
-SHELL := /bin/bash
+# share.makefile
 
+# dir of this file.
 CURRENT_DIR := $(dir $(lastword ${MAKEFILE_LIST}))
 
 # Project root dir.
@@ -67,6 +68,10 @@ else
     GOARCH := $(word 2, $(subst _, ,${PLATFORM}))
 
     IMAGE_PLAT := linux_${GOARCH}
+endif
+
+ifeq (${GOOS}, darwin)
+	SED := gsed
 endif
 
 # Linux command settings.

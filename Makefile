@@ -1,10 +1,21 @@
+# Global variables ============================================================
+
+SHELL := /bin/bash
+SED := sed
+
+# Go binariy.
+GO := go
+
+# Project source code test coverage threshold.
+COVERAGE := 30
+
 # Usage components ============================================================
 
 define USAGE_OPTIONS
 
 Options:
 
-   BINS        The binaries to build. Default is all in cmd/.
+   BINS        The binaries to build. Default is all commands in cmd/.
                This option is available for: make build/build.multiarch
                Example: make build BINS="apiserver otherbin"
    PLATFORMS   The multiple platforms to build.
@@ -26,7 +37,7 @@ include scripts/makefiles/tools.makefile
 .DEFAULT_GOAL := all
 
 .PHONY: all
-all: tidy build
+all: tidy lint cover build
 
 .PHONY: tidy
 tidy:
@@ -53,7 +64,7 @@ test:
 	@${MAKE} go.test
 
 ##  cover: Run unit test and get test coverage.
-.PHONY: cover 
+.PHONY: cover
 cover:
 	@${MAKE} go.test.cover
 
@@ -63,7 +74,7 @@ clean:
 	@echo "===========> Cleaning all build output"
 	@-rm -vrf ${OUTPUT_DIR}
 
-##  help: Show this help info.
+##  help: Show this help.
 .PHONY: help
 help: Makefile
 	@echo -e "\nUsage: make [TARGETS] [OPTIONS] \n\nTargets:\n"

@@ -1,13 +1,12 @@
-# Go bin.
-GO := go
+# go.makefile
 
 # Supports Go versions.
 GO_SUPPORTED_VERSIONS ?= 1.13|1.14|1.15|1.16|1.17
 
 # The project package name.
-ROOT_PACKAGE=go-web-backend
-# The version package name.
-VERSION_PACKAGE=go-web-backend/pkg/version
+ROOT_PACKAGE = go-web-backend
+# The project version package name.
+VERSION_PACKAGE = ${ROOT_PACKAGE}/pkg/version
 
 # Go build args.
 GO_LDFLAGS += -X ${VERSION_PACKAGE}.GitVersion=${VERSION} \
@@ -73,17 +72,18 @@ go.lint: tools.verify.golangci-lint
 	@golangci-lint run -c ${ROOT_DIR}/.golangci.yaml ${ROOT_DIR}/...
 
 .PHONY: go.test
-go.test: tools.verify.go-junit-report
+go.test: tools.verify.go-junit-report tools.verify.gsed
 	@echo "===========> Run unit test"
 	@${GO} test -race -cover -coverprofile=${OUTPUT_DIR}/coverage.out \
 		-timeout=10m -short -v `go list ./...|\
 		egrep -v "$(subst ' ','|',$(sort ${EXCLUDE_TESTS}))"` | \
 		tee >(go-junit-report --set-exit-code >${OUTPUT_DIR}/report.xml)
 	@${GO} tool cover -html=${OUTPUT_DIR}/coverage.out -o ${OUTPUT_DIR}/coverage.html
-	@sed -i '/mock_.*.go/d' ${OUTPUT_DIR}/coverage.out
+	@${SED} -i '/mock_.*.go/d' ${OUTPUT_DIR}/coverage.out
 
 .PHONY: go.test.cover
 go.test.cover: go.test
+	@echo -e "\n===========> Run test coverage"
 	@${GO} tool cover -func=${OUTPUT_DIR}/coverage.out | \
 		awk -v target=${COVERAGE} -f ${ROOT_DIR}/scripts/coverage.awk
 
