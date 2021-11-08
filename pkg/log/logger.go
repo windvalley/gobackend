@@ -28,12 +28,14 @@ func newLogger(l *zap.Logger, o *Options) *Logger {
 // WithName custom logger name.
 func (l *Logger) WithName(name string) *Logger {
 	logger := l.zapLogger.Named(name)
+
 	return newLogger(logger, l.options)
 }
 
 // WithFields custom other log entry fileds.
 func (l *Logger) WithFields(fields ...Field) *Logger {
 	logger := l.zapLogger.With(fields...)
+
 	return newLogger(logger, l.options)
 }
 
@@ -42,6 +44,7 @@ func (l *Logger) WithFields(fields ...Field) *Logger {
 // WithHooks is for the new logger.
 func (l *Logger) WithHooks(hooks ...Hook) *Logger {
 	logger := l.zapLogger.WithOptions(zap.Hooks(hooks...))
+
 	return newLogger(logger, l.options)
 }
 

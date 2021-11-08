@@ -192,6 +192,7 @@ func buildOptions(cfg *zap.Config, errSink zapcore.WriteSyncer) []zap.Option {
 			if scfg.Hook != nil {
 				samplerOpts = append(samplerOpts, zapcore.SamplerHook(scfg.Hook))
 			}
+
 			return zapcore.NewSamplerWithOptions(
 				core,
 				time.Second,
@@ -259,9 +260,8 @@ func getRotateSyncer(path string, opts *Options) (syncer zapcore.WriteSyncer) {
 func openFile(filename string) (*os.File, error) {
 	_, err := os.Stat(filename)
 	if os.IsNotExist(err) {
-		err := os.MkdirAll(filepath.Dir(filename), 0744)
-		if err != nil {
-			return nil, fmt.Errorf("make directory for new logfile failed: %s", err)
+		if err1 := os.MkdirAll(filepath.Dir(filename), 0744); err1 != nil {
+			return nil, fmt.Errorf("make directory for new logfile failed: %w", err1)
 		}
 
 		return os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
