@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"go-web-backend/pkg/shutdown"
+	"gobackend/pkg/shutdown"
 )
 
 type startShutdownFunc func(sm shutdown.Manager)

@@ -9,13 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 
-	"go-web-backend/pkg/log"
-	"go-web-backend/pkg/util"
+	"gobackend/pkg/log"
+	"gobackend/pkg/util"
 )
 
 const (
 	// RecommendedHomeDir defines the default directory used to place all apps configurations.
-	RecommendedHomeDir = ".go-web-backend"
+	RecommendedHomeDir = ".gobackend"
 
 	// RecommendedEnvPrefix defines the ENV prefix used by all apps.
 	RecommendedEnvPrefix = "GO_WEB_BACKEND"
@@ -115,7 +115,7 @@ func LoadConfig(cfg string, defaultName string) {
 	// Use config file from the flag.
 	viper.SetConfigType("yaml")              // set the type of the configuration to yaml.
 	viper.AutomaticEnv()                     // read in environment variables that match.
-	viper.SetEnvPrefix(RecommendedEnvPrefix) // set ENVIRONMENT variables prefix to go-web-backend.
+	viper.SetEnvPrefix(RecommendedEnvPrefix) // set ENVIRONMENT variables prefix to gobackend.
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
 	// If a config file is found, read it in.

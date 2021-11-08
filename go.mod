@@ -1,4 +1,4 @@
-module go-web-backend
+module gobackend
 
 go 1.16
 

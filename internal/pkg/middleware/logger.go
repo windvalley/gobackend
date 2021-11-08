@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mattn/go-isatty"
 
-	"go-web-backend/pkg/log"
+	"gobackend/pkg/log"
 )
 
 var logOptions *log.Options

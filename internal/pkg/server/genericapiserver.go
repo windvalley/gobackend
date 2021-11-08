@@ -15,11 +15,11 @@ import (
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"golang.org/x/sync/errgroup"
 
-	"go-web-backend/pkg/core"
-	"go-web-backend/pkg/log"
-	"go-web-backend/pkg/version"
+	"gobackend/pkg/core"
+	"gobackend/pkg/log"
+	"gobackend/pkg/version"
 
-	"go-web-backend/internal/pkg/middleware"
+	"gobackend/internal/pkg/middleware"
 )
 
 // GenericAPIServer contains state for api server.

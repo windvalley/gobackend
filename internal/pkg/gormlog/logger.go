@@ -11,7 +11,7 @@ import (
 
 	gormlogger "gorm.io/gorm/logger"
 
-	"go-web-backend/pkg/log"
+	"gobackend/pkg/log"
 )
 
 // Define colors.

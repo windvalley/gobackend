@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"go-web-backend/internal/pkg/server"
+	"gobackend/internal/pkg/server"
 )
 
 // SecureServingOptions contains configuration items related to HTTPS server startup.

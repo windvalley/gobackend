@@ -4,7 +4,7 @@
 GO_SUPPORTED_VERSIONS ?= 1.13|1.14|1.15|1.16|1.17
 
 # The project package name.
-ROOT_PACKAGE = go-web-backend
+ROOT_PACKAGE = gobackend
 # The project version package name.
 VERSION_PACKAGE = ${ROOT_PACKAGE}/pkg/version
 

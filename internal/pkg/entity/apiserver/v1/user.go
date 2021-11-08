@@ -5,9 +5,9 @@ import (
 
 	"gorm.io/gorm"
 
-	metav1 "go-web-backend/pkg/meta/v1"
-	"go-web-backend/pkg/util/authtool"
-	"go-web-backend/pkg/util/idtool"
+	metav1 "gobackend/pkg/meta/v1"
+	"gobackend/pkg/util/authtool"
+	"gobackend/pkg/util/idtool"
 )
 
 // User represents a user restful resource. It is also used as gorm model.

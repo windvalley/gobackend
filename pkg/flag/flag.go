@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"go-web-backend/pkg/log"
+	"gobackend/pkg/log"
 )
 
 // WordSepNormalizeFunc changes all flags that contain "_" separators.

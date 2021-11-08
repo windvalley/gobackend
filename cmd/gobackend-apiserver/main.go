@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"time"
 
-	"go-web-backend/internal/app/apiserver"
+	"gobackend/internal/app/apiserver"
 )
 
 func main() {
@@ -16,5 +16,5 @@ func main() {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 	}
 
-	apiserver.NewApp("apiserver").Run()
+	apiserver.NewApp("gobackend-apiserver").Run()
 }

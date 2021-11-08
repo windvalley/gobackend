@@ -1,4 +1,4 @@
-# go-web-backend
+# gobackend
 
 Enterprise-grade Go web backend scaffolding based on
 [cobra][1], [viper][2], [pflag][3], [zap][4], [gorm][5], [gin][6].

@@ -1,6 +1,6 @@
 package config
 
-import "go-web-backend/internal/app/apiserver/options"
+import "gobackend/internal/app/apiserver/options"
 
 // Config of apiserver.
 type Config struct {

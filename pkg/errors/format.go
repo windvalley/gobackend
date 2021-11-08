@@ -30,11 +30,11 @@ type formatInfo struct {
 // Examples:
 //      %s:    error for internal read B
 //      %v:    error for internal read B
-//      %-v:   error for internal read B - #0 [/go-web-backend/main.go:12 (main.main)] (#100102) Internal Server Error
-//      %+v:   error for internal read B - #0 [/go-web-backend/main.go:12 (main.main)] (#100102) Internal Server Error; error for internal read A - #1 [/go-web-demo/main.go:35 (main.newErrorB)] (#100104) Validation failed
+//      %-v:   error for internal read B - #0 [/gobackend/main.go:12 (main.main)] (#100102) Internal Server Error
+//      %+v:   error for internal read B - #0 [/gobackend/main.go:12 (main.main)] (#100102) Internal Server Error; error for internal read A - #1 [/go-web-demo/main.go:35 (main.newErrorB)] (#100104) Validation failed
 //      %#v:   [{"error":"error for internal read B"}]
-//      %#-v:  [{"caller":"#0 /go-web-backend/main.go:12 (main.main)","error":"error for internal read B","message":"(#100102) Internal Server Error"}]
-//      %#+v:  [{"caller":"#0 /go-web-backend/main.go:12 (main.main)","error":"error for internal read B","message":"(#100102) Internal Server Error"},{"caller":"#1 /go-web-demo/main.go:35 (main.newErrorB)","error":"error for internal read A","message":"(#100104) Validation failed"}]
+//      %#-v:  [{"caller":"#0 /gobackend/main.go:12 (main.main)","error":"error for internal read B","message":"(#100102) Internal Server Error"}]
+//      %#+v:  [{"caller":"#0 /gobackend/main.go:12 (main.main)","error":"error for internal read B","message":"(#100102) Internal Server Error"},{"caller":"#1 /go-web-demo/main.go:35 (main.newErrorB)","error":"error for internal read A","message":"(#100104) Validation failed"}]
 func (w *withCode) Format(state fmt.State, verb rune) {
 	switch verb {
 	case 'v':
