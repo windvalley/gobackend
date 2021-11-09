@@ -17,7 +17,7 @@ insecure:
   # Default: 127.0.0.1
   bind-address: 127.0.0.1
   # Default: 8080
-  bind-port: 8089
+  bind-port: 8080
 
 # HTTPS
 secure:
@@ -39,11 +39,11 @@ mysql:
   # Default: 127.0.0.1:3306
   host: 127.0.0.1:3306
   # Default: ""
-  username: ""
+  username: "root"
   # Default: ""
-  password: ""
+  password: "123456"
   # Default: ""
-  database: "test"
+  database: "gobackend"
   # Default: 100
   max-idle-connections: 100
   # Default: 100
