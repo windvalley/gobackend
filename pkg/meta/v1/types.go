@@ -3,6 +3,8 @@ package v1
 import (
 	"time"
 
+	"gorm.io/gorm"
+
 	"gobackend/pkg/json"
 )
 
@@ -89,7 +91,7 @@ type ObjectMeta struct {
 	//
 	// Populated by the system when a graceful deletion is requested.
 	// Read-only.
-	// DeletedAt *time.Time `json:"-" gorm:"column:deletedAt;index:idx_deletedAt"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index;column:deletedAt"`
 }
 
 // ListOptions is the query options to a standard REST list call.
