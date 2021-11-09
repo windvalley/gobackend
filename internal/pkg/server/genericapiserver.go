@@ -12,6 +12,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+	gindump "github.com/tpkeeper/gin-dump"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"golang.org/x/sync/errgroup"
 
@@ -97,7 +98,17 @@ func (s *GenericAPIServer) InstallMiddlewares() {
 	s.Use(middleware.RequestID())
 	s.Use(middleware.Context())
 
-	// install custom middlewares
+	// Dump header/body of request and response.
+	// Very helpful for debugging your applications.
+	if gin.Mode() == gin.DebugMode {
+		log.Infof("install middleware 'dump' for gin debug mode")
+
+		s.Use(gindump.DumpWithOptions(true, true, true, true, false, func(dumpStr string) {
+			log.Info(dumpStr)
+		}))
+	}
+
+	// Install custom middlewares.
 	for _, m := range s.middlewares {
 		mw, ok := middleware.Middlewares[m]
 		if !ok {
