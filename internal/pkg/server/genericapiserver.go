@@ -91,12 +91,14 @@ func (s *GenericAPIServer) InstallAPIs() {
 
 // InstallMiddlewares install generic middlewares.
 func (s *GenericAPIServer) InstallMiddlewares() {
-	log.Infof("install default middlewares: recovery, logger, requestid, context")
+	log.Infof("install default middlewares: requestid, context, recovery, logger")
 
-	s.Use(gin.Recovery())
-	s.Use(middleware.Logger())
 	s.Use(middleware.RequestID())
 	s.Use(middleware.Context())
+	// NOTE: Must place before middleware.Recovery(),
+	// otherwise it will not write the access log entry when panic occurred.
+	s.Use(middleware.Logger())
+	s.Use(middleware.Recovery())
 
 	// Dump header/body of request and response.
 	// Very helpful for debugging your applications.
