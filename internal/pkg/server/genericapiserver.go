@@ -12,7 +12,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
-	gindump "github.com/tpkeeper/gin-dump"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"golang.org/x/sync/errgroup"
 
@@ -91,7 +90,7 @@ func (s *GenericAPIServer) InstallAPIs() {
 
 // InstallMiddlewares install generic middlewares.
 func (s *GenericAPIServer) InstallMiddlewares() {
-	log.Infof("install default middlewares: requestid, context, recovery, logger")
+	log.Infof("install default middlewares: requestid, context, logger, recovery")
 
 	s.Use(middleware.RequestID())
 	s.Use(middleware.Context())
@@ -99,16 +98,6 @@ func (s *GenericAPIServer) InstallMiddlewares() {
 	// otherwise it will not write the access log entry when panic occurred.
 	s.Use(middleware.Logger())
 	s.Use(middleware.Recovery())
-
-	// Dump header/body of request and response.
-	// Very helpful for debugging your applications.
-	if gin.Mode() == gin.DebugMode {
-		log.Infof("install middleware 'dump' for gin debug mode")
-
-		s.Use(gindump.DumpWithOptions(true, true, true, true, false, func(dumpStr string) {
-			log.Info(dumpStr)
-		}))
-	}
 
 	// Install custom middlewares.
 	for _, m := range s.middlewares {
