@@ -93,7 +93,7 @@ func (s *GenericAPIServer) InstallAPIs() {
 func (s *GenericAPIServer) InstallMiddlewares() {
 	log.Infof("install default middlewares: recovery, logger, requestid, context")
 
-	s.Use(gin.Recovery())
+	s.Use(middleware.Recovery())
 	s.Use(middleware.Logger())
 	s.Use(middleware.RequestID())
 	s.Use(middleware.Context())
