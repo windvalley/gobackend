@@ -15,6 +15,12 @@ const (
 	// ErrValidation - 400: Validation failed.
 	ErrValidation
 
+	// ErrFieldSelectorValidation - 400: Field selector validation failed.
+	ErrFieldSelectorValidation
+
+	// ErrUpdateNone - 400: Update nothing.
+	ErrUpdateNone
+
 	// ErrTokenInvalid - 401: Token invalid.
 	ErrTokenInvalid
 
