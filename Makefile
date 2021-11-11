@@ -77,7 +77,7 @@ gen:
 ##  clean: Remove all files that are created by building.
 .PHONY: clean
 clean:
-	@echo "===========> Cleaning all build output"
+	@echo "==========> Cleaning all build output"
 	@-rm -vrf ${OUTPUT_DIR}
 
 ##  help: Show this help.

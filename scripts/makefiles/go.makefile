@@ -56,9 +56,10 @@ go.build.%:
 	$(eval OS := $(word 1,$(subst _, ,${PLATFORM})))
 	$(eval ARCH := $(word 2,$(subst _, ,${PLATFORM})))
 	$(eval GO_BIN_EXT = $(if $(findstring windows,${OS}),.exe,))
-	@echo "===========> Building binary '${COMMAND}${GO_BIN_EXT}' ${VERSION} for ${OS} ${ARCH}"
+	@echo "==========> Building binary '${COMMAND}${GO_BIN_EXT}' ${VERSION} for ${OS} ${ARCH}"
 	@mkdir -p ${OUTPUT_DIR}/platforms/${OS}/${ARCH}
 	@CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} ${GO} build ${GO_BUILD_FLAGS} -o ${OUTPUT_DIR}/platforms/${OS}/${ARCH}/${COMMAND}${GO_BIN_EXT} ${ROOT_PACKAGE}/cmd/${COMMAND}
+	@echo "${OUTPUT_DIR}/platforms/${OS}/${ARCH}/${COMMAND}${GO_BIN_EXT}"
 
 .PHONY: go.build
 go.build: go.build.verify $(addprefix go.build., $(addprefix ${PLATFORM}., ${BINS}))
@@ -68,12 +69,12 @@ go.build.multiarch: go.build.verify $(foreach p,${PLATFORMS},$(addprefix go.buil
 
 .PHONY: go.lint
 go.lint: tools.verify.golangci-lint
-	@echo "===========> Run golangci to lint source codes"
+	@echo "==========> Run golangci to lint source codes"
 	@golangci-lint run -c ${ROOT_DIR}/.golangci.yaml ${ROOT_DIR}/...
 
 .PHONY: go.test
 go.test: tools.verify.go-junit-report tools.verify.gsed
-	@echo "===========> Run unit test"
+	@echo "==========> Run unit test"
 	@${GO} test -race -cover -coverprofile=${OUTPUT_DIR}/coverage.out \
 		-timeout=10m -short -v `go list ./...|\
 		egrep -v "$(subst ' ','|',$(sort ${EXCLUDE_TESTS}))"` | \
@@ -83,7 +84,7 @@ go.test: tools.verify.go-junit-report tools.verify.gsed
 
 .PHONY: go.test.cover
 go.test.cover: go.test
-	@echo -e "\n===========> Run test coverage"
+	@echo -e "\n==========> Run test coverage"
 	@${GO} tool cover -func=${OUTPUT_DIR}/coverage.out | \
 		awk -v target=${COVERAGE} -f ${ROOT_DIR}/scripts/coverage.awk
 
