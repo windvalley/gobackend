@@ -39,6 +39,5 @@ Project run:
 ./scripts/run_dev.sh
 ```
 
-<img width="637" alt="rundev" src="https://user-images.githubusercontent.com/6139938/141255207-100c31a7-d70b-4e03-9d89-fb5751d04d0f.png">
-
+<img width="599" alt="rundev-shot" src="https://user-images.githubusercontent.com/6139938/141258757-b994bc59-7eee-462e-91a1-ece516035f8a.png">
 
