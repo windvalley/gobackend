@@ -38,3 +38,7 @@ Project run:
 ```sh
 ./scripts/run_dev.sh
 ```
+
+<img width="637" alt="rundev" src="https://user-images.githubusercontent.com/6139938/141255207-100c31a7-d70b-4e03-9d89-fb5751d04d0f.png">
+
+
