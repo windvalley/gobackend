@@ -29,9 +29,9 @@ type User struct {
 
 	Phone string `json:"phone" gorm:"column:phone" validate:"omitempty"`
 
-	IsAdmin int `json:"isAdmin,omitempty" gorm:"column:isAdmin" validate:"omitempty"`
+	IsAdmin int `json:"is_admin,omitempty" gorm:"column:is_admin" validate:"omitempty"`
 
-	TotalPolicy int64 `json:"totalPolicy" gorm:"-" validate:"omitempty"`
+	TotalPolicy int64 `json:"total_policy" gorm:"-" validate:"omitempty"`
 }
 
 // UserList is the whole list of all users which have been stored in stroage.

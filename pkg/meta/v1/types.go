@@ -22,13 +22,13 @@ type TypeMeta struct {
 	// APIVersion defines the versioned schema of this representation of an object.
 	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
-	APIVersion string `json:"apiVersion,omitempty"`
+	APIVersion string `json:"api_version,omitempty"`
 }
 
 // ListMeta describes metadata that synthetic resources must have, including lists and
 // various status objects. A resource may have only one of {ObjectMeta, ListMeta}.
 type ListMeta struct {
-	TotalCount int64 `json:"totalCount,omitempty"`
+	TotalCount int64 `json:"total_count,omitempty"`
 }
 
 // ObjectMeta is metadata that all persisted resources must have, which includes all objects
@@ -44,7 +44,7 @@ type ObjectMeta struct {
 
 	// InstanceID defines a string type resource identifier,
 	// use prefixed to distinguish resource types, easy to remember, Url-friendly.
-	InstanceID string `json:"instanceID,omitempty" gorm:"unique;column:instanceID;type:varchar(32);not null"`
+	InstanceID string `json:"instance_id,omitempty" gorm:"unique;column:instance_id;type:varchar(32);not null"`
 
 	// Name defines the space within each name must be unique.
 	// Not all objects are required to be scoped to a username - the value of this field for
@@ -66,7 +66,7 @@ type ObjectMeta struct {
 	Extend Extend `json:"extend,omitempty" gorm:"-" validate:"omitempty"`
 
 	// ExtendShadow is the shadow of Extend. DO NOT modify directly.
-	ExtendShadow string `json:"-" gorm:"column:extendShadow" validate:"omitempty"`
+	ExtendShadow string `json:"-" gorm:"column:extend_shadow" validate:"omitempty"`
 
 	// CreatedAt is a timestamp representing the server time when this object was
 	// created. It is not guaranteed to be set in happens-before order across separate operations.
@@ -75,7 +75,7 @@ type ObjectMeta struct {
 	// Populated by the system.
 	// Read-only.
 	// Null for lists.
-	CreatedAt time.Time `json:"createdAt,omitempty" gorm:"column:createdAt"`
+	CreatedAt time.Time `json:"created_at,omitempty" gorm:"column:created_at"`
 
 	// UpdatedAt is a timestamp representing the server time when this object was updated.
 	// Clients may not set this value. It is represented in RFC3339 form and is in UTC.
@@ -83,7 +83,7 @@ type ObjectMeta struct {
 	// Populated by the system.
 	// Read-only.
 	// Null for lists.
-	UpdatedAt time.Time `json:"updatedAt,omitempty" gorm:"column:updatedAt"`
+	UpdatedAt time.Time `json:"updated_at,omitempty" gorm:"column:updated_at"`
 
 	// DeletedAt is RFC 3339 date and time at which this resource will be deleted. This
 	// field is set by the server when a graceful deletion is requested by the user, and is not
@@ -91,7 +91,7 @@ type ObjectMeta struct {
 	//
 	// Populated by the system when a graceful deletion is requested.
 	// Read-only.
-	DeletedAt gorm.DeletedAt `json:"-" gorm:"index;column:deletedAt"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index;column:deleted_at"`
 }
 
 // ListOptions is the query options to a standard REST list call.
@@ -99,13 +99,14 @@ type ListOptions struct {
 	TypeMeta `json:",inline"`
 
 	// LabelSelector is used to find matching REST resources.
-	LabelSelector string `json:"labelSelector,omitempty" form:"labelSelector"`
+	LabelSelector string `json:"label_selector,omitempty" form:"label_selector"`
 
 	// FieldSelector restricts the list of returned objects by their fields. Defaults to everything.
-	FieldSelector string `json:"fieldSelector,omitempty" form:"fieldSelector"`
+	// e.g.: field_selector=name=david
+	FieldSelector string `json:"field_selector,omitempty" form:"field_selector"`
 
 	// TimeoutSeconds specifies the seconds of ClientIP type session sticky time.
-	TimeoutSeconds *int64 `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int64 `json:"timeout_seconds,omitempty"`
 
 	// Offset specify the number of records to skip before starting to return the records.
 	Offset *int64 `json:"offset,omitempty" form:"offset"`
@@ -150,7 +151,7 @@ type CreateOptions struct {
 	// request. Valid values are:
 	// - All: all dry run stages will be processed
 	// +optional
-	DryRun []string `json:"dryRun,omitempty"`
+	DryRun []string `json:"dry_run,omitempty"`
 }
 
 // PatchOptions may be provided when patching an API object.
@@ -164,7 +165,7 @@ type PatchOptions struct {
 	// request. Valid values are:
 	// - All: all dry run stages will be processed
 	// +optional
-	DryRun []string `json:"dryRun,omitempty"`
+	DryRun []string `json:"dry_run,omitempty"`
 
 	// Force is going to "force" Apply requests. It means user will
 	// re-acquire conflicting fields owned by other people. Force
@@ -184,7 +185,7 @@ type UpdateOptions struct {
 	// request. Valid values are:
 	// - All: all dry run stages will be processed
 	// +optional
-	DryRun []string `json:"dryRun,omitempty"`
+	DryRun []string `json:"dry_run,omitempty"`
 }
 
 // AuthorizeOptions may be provided when authorize an API object.
@@ -215,7 +216,7 @@ func (ext Extend) String() string {
 func (ext Extend) Merge(extendShadow string) Extend {
 	var extend Extend
 
-	// always trust the extendShadow in the database
+	// Always trust the extendShadow in the database.
 	_ = json.Unmarshal([]byte(extendShadow), &extend)
 	for k, v := range extend {
 		if _, ok := ext[k]; !ok {
