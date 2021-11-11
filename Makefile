@@ -29,15 +29,16 @@ export USAGE_OPTIONS
 
 include scripts/makefiles/share.makefile
 include scripts/makefiles/go.makefile
+include scripts/makefiles/generate.makefile
 include scripts/makefiles/tools.makefile
 
 # Targets =====================================================================
 
-# Build all by default.
-.DEFAULT_GOAL := all
+# Print help information by default.
+.DEFAULT_GOAL := help
 
 .PHONY: all
-all: tidy lint cover build
+all: tidy gen lint cover build
 
 .PHONY: tidy
 tidy:
@@ -67,6 +68,11 @@ test:
 .PHONY: cover
 cover:
 	@${MAKE} go.test.cover
+
+##  gen: Generate necessary source code files and doc files.
+.PHONY: gen
+gen:
+	@${MAKE} gen.run
 
 ##  clean: Remove all files that are created by building.
 .PHONY: clean
