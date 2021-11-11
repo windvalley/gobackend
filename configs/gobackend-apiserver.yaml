@@ -6,6 +6,7 @@ server:
   # Enable server health check or not，if enabled, will install /healthz router;
   # Default: true
   healthz: true
+  # Option values: secure, nocache, cors, dump, options.
   # Default: ""
   middlewares: secure,nocache,cors
   # Self ping check after server start;
