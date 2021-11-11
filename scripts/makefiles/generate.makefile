@@ -15,6 +15,7 @@ gen.errcode.code:
 .PHONY: gen.errcode.doc
 gen.errcode.doc:
 	@echo "==========> Generating error code documentation"
+	@mkdir -p ${ROOT_DIR}/docs/api/
 	@go run ${ROOT_DIR}/tools/codegen/codegen.go -type=int -doc \
 		-output ${ROOT_DIR}/docs/api/error_code_generated.md ${ROOT_DIR}/internal/pkg/code
 	@echo "${ROOT_DIR}/docs/api/error_code_generated.md"
