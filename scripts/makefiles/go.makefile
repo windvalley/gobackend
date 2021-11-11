@@ -62,10 +62,10 @@ go.build.%:
 	@echo "${OUTPUT_DIR}/platforms/${OS}/${ARCH}/${COMMAND}${GO_BIN_EXT}"
 
 .PHONY: go.build
-go.build: go.build.verify $(addprefix go.build., $(addprefix ${PLATFORM}., ${BINS}))
+go.build: go.build.verify go.tidy $(addprefix go.build., $(addprefix ${PLATFORM}., ${BINS}))
 
 .PHONY: go.build.multiarch
-go.build.multiarch: go.build.verify $(foreach p,${PLATFORMS},$(addprefix go.build., $(addprefix ${p}., ${BINS})))
+go.build.multiarch: go.build.verify go.tidy $(foreach p,${PLATFORMS},$(addprefix go.build., $(addprefix ${p}., ${BINS})))
 
 .PHONY: go.lint
 go.lint: tools.verify.golangci-lint
@@ -91,3 +91,8 @@ go.test.cover: go.test
 .PHONY: go.updates
 go.updates: tools.verify.go-mod-outdated
 	@${GO} list -u -m -json all | go-mod-outdated -update -direct
+
+.PHONY: go.tidy
+go.tidy:
+	@echo "==========> go mod tidy"
+	@${GO} mod tidy

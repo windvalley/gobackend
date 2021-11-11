@@ -38,11 +38,7 @@ include scripts/makefiles/tools.makefile
 .DEFAULT_GOAL := help
 
 .PHONY: all
-all: tidy gen lint cover build
-
-.PHONY: tidy
-tidy:
-	@${GO} mod tidy
+all: gen lint cover build
 
 ##  build: Compile packages and dependencies to generate bin file for current platform.
 .PHONY: build
