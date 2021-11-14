@@ -39,10 +39,11 @@ func installController(g *gin.Engine) *gin.Engine {
 			userController := user.NewController(storeIns)
 
 			userv1.POST("", userController.Create)
-			userv1.DELETE("", userController.DeleteCollection)
-			userv1.DELETE(":name", userController.Delete)
-			userv1.PUT(":name", userController.Update)
 			userv1.GET(":name", userController.Get)
+			userv1.GET("", userController.List)
+			userv1.PUT(":name", userController.Update)
+			userv1.DELETE(":name", userController.Delete)
+			userv1.DELETE("", userController.DeleteCollection)
 		}
 	}
 

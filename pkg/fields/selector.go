@@ -115,6 +115,60 @@ func (t *hasTerm) DeepCopySelector() Selector {
 	return out
 }
 
+type equalTerm struct {
+	field, value string
+}
+
+func (t *equalTerm) Matches(ls Fields) bool {
+	return ls.Get(t.field) == t.value
+}
+
+func (t *equalTerm) Empty() bool {
+	return false
+}
+
+func (t *equalTerm) RequiresExactMatch(field string) (value string, found bool) {
+	if t.field == field {
+		return t.value, true
+	}
+
+	return "", false
+}
+
+func (t *equalTerm) Transform(fn TransformFunc) (Selector, error) {
+	field, value, err := fn(t.field, t.value)
+	if err != nil {
+		return nil, err
+	}
+	if len(field) == 0 && len(value) == 0 {
+		return Everything(), nil
+	}
+
+	return &equalTerm{field, value}, nil
+}
+
+func (t *equalTerm) Requirements() Requirements {
+	return []Requirement{{
+		Field:    t.field,
+		Operator: selection.DoubleEquals,
+		Value:    t.value,
+	}}
+}
+
+func (t *equalTerm) String() string {
+	return fmt.Sprintf("%v=%v", t.field, EscapeValue(t.value))
+}
+
+func (t *equalTerm) DeepCopySelector() Selector {
+	if t == nil {
+		return nil
+	}
+	out := new(equalTerm)
+	*out = *t
+
+	return out
+}
+
 type notHasTerm struct {
 	field, value string
 }
@@ -450,7 +504,7 @@ func parseSelector(selector string, fn TransformFunc) (Selector, error) {
 		case notEqualOperator:
 			items = append(items, &notHasTerm{field: lhs, value: unescapedRHS})
 		case doubleEqualOperator:
-			items = append(items, &hasTerm{field: lhs, value: unescapedRHS})
+			items = append(items, &equalTerm{field: lhs, value: unescapedRHS})
 		case equalOperator:
 			items = append(items, &hasTerm{field: lhs, value: unescapedRHS})
 		default:

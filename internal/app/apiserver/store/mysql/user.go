@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"context"
+	"fmt"
 
 	gorm "gorm.io/gorm"
 
@@ -70,14 +71,28 @@ func (u *users) Get(ctx context.Context, username string, opts metav1.GetOptions
 	return user, nil
 }
 
-// List return all users.
+// List users.
 func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList, error) {
 	ret := &v1.UserList{}
 	ol := gormtool.Unpointer(opts.Offset, opts.Limit)
 
+	where := ""
+
+	// opt.FieldSelector e.g.:
+	// https://.../?field_selector=name==levin,email=n@gmail.com
+	// == means exact match, and = means fuzzy match.
 	selector, _ := fields.ParseSelector(opts.FieldSelector)
-	username, _ := selector.RequiresExactMatch("name")
-	d := u.db.Where("name like ?", "%"+username+"%").
+
+	for _, require := range selector.Requirements() {
+		switch require.Field {
+		case "name":
+			where = buildWhere(require, where)
+		case "email":
+			where = buildWhere(require, where)
+		}
+	}
+
+	d := u.db.Where(where).
 		Offset(ol.Offset).
 		Limit(ol.Limit).
 		Order("id desc").
@@ -89,30 +104,19 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 	return ret, d.Error
 }
 
-// ListOptional show a more graceful query method.
-func (u *users) ListOptional(ctx context.Context, opts metav1.ListOptions) (*v1.UserList, error) {
-	ret := &v1.UserList{}
-	ol := gormtool.Unpointer(opts.Offset, opts.Limit)
-
-	where := v1.User{}
-	whereNot := v1.User{
-		IsAdmin: 0,
-	}
-	selector, _ := fields.ParseSelector(opts.FieldSelector)
-	username, found := selector.RequiresExactMatch("name")
-	if found {
-		where.Name = username
+func buildWhere(require fields.Requirement, where string) string {
+	if where != "" {
+		where += " and "
 	}
 
-	d := u.db.Where(where).
-		Not(whereNot).
-		Offset(ol.Offset).
-		Limit(ol.Limit).
-		Order("id desc").
-		Find(&ret.Items).
-		Offset(-1).
-		Limit(-1).
-		Count(&ret.TotalCount)
+	switch require.Operator {
+	case "==":
+		where += fmt.Sprintf("%s = '%v'", require.Field, require.Value)
+	case "=":
+		where += fmt.Sprintf("%s like '%%%v%%'", require.Field, require.Value)
+	case "!=":
+		where += fmt.Sprintf("%s %s '%v'", require.Field, require.Operator, require.Value)
+	}
 
-	return ret, d.Error
+	return where
 }
