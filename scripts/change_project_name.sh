@@ -37,4 +37,6 @@ mv ../cmd/{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver
 mv ../configs/{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
 mv ../configs/dev.{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
 
+mv ../build/docker/{"$CURRENT_PROJECT_NAME","$NEW_PROJECT_NAME"}-apiserver
+
 exit 0
