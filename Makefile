@@ -18,6 +18,9 @@ Options:
    BINS        The binaries to build. Default is all commands in cmd/.
                This option is available for: make build/build.multiarch
                Example: make build BINS="apiserver otherbin"
+   IMAGES      Docker images to build. Default is all commands in cmd/.
+               This option is available when using: make image/image.multiarch.
+               Example: make image.multiarch IMAGES="apiserver otherbin"
    PLATFORMS   The multiple platforms to build.
                Default is 'darwin_amd64 darwin_arm64 linux_amd64 linux_arm64 windows_amd64'.
                This option is available when using: make build.multiarch.
@@ -29,6 +32,7 @@ export USAGE_OPTIONS
 
 include scripts/makefiles/share.makefile
 include scripts/makefiles/go.makefile
+include scripts/makefiles/image.makefile
 include scripts/makefiles/generate.makefile
 include scripts/makefiles/tools.makefile
 
@@ -49,6 +53,11 @@ build:
 .PHONY: build.multiarch
 build.multiarch:
 	@${MAKE} go.build.multiarch
+
+##  image: Build docker images for host arch.
+.PHONY: image
+image:
+	@${MAKE} image.build
 
 ##  lint: Check syntax and style of Go source code.
 .PHONY: lint
