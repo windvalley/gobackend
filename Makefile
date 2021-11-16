@@ -59,6 +59,11 @@ build.multiarch:
 image:
 	@${MAKE} image.build
 
+##  push: Build docker images for host arch and push images to registry.
+.PHONY: push
+push:
+	@${MAKE} image.push
+
 ##  lint: Check syntax and style of Go source code.
 .PHONY: lint
 lint:

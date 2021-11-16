@@ -50,4 +50,10 @@ image.build.%: go.build.%
 	$(eval BUILD_SUFFIX := ${_DOCKER_BUILD_EXTRA_ARGS} --pull -t ${REGISTRY_PREFIX}/${IMAGE}:${VERSION} ${TMP_DIR}/${IMAGE})
 	@${DOCKER} build ${BUILD_SUFFIX}
 
+.PHONY: image.push
+image.push: image.verify go.build.verify $(addprefix image.push., $(addprefix $(IMAGE_PLAT)., $(IMAGES)))
 
+.PHONY: image.push.%
+image.push.%: image.build.%
+	@echo "===========> Pushing docker image ${IMAGE} ${VERSION} to ${REGISTRY_PREFIX}"
+	${DOCKER} push ${REGISTRY_PREFIX}/${IMAGE}:${VERSION}
