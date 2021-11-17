@@ -3,6 +3,7 @@ package mysql
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"gorm.io/gorm"
 
@@ -60,7 +61,7 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 			Database:              opts.Database,
 			MaxIdleConnections:    opts.MaxIdleConnections,
 			MaxOpenConnections:    opts.MaxOpenConnections,
-			MaxConnectionLifetime: opts.MaxConnectionLifetime,
+			MaxConnectionLifetime: opts.MaxConnectionLifetime * time.Second, //nolint:durationcheck
 			LogLevel:              opts.LogLevel,
 			Logger:                gormlog.New(opts.LogLevel),
 		}
@@ -97,8 +98,9 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 	return nil
 }
 
+// nolint:unused
 // cleanDatabase tear downs the database tables.
-// nolint:unused // may be reused in the feature, or just show a migrate usage.
+// may be reused in the feature, or just show a migrate usage.
 func cleanDatabase(db *gorm.DB) error {
 	if err := db.Migrator().DropTable(&v1.User{}); err != nil {
 		return errors.Wrap(err, "drop user table failed")
