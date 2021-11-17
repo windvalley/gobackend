@@ -66,6 +66,7 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 			Logger:                gormlog.New(opts.LogLevel),
 		}
 
+		log.Info("start connecting mysql database ...")
 		dbIns, err = db.New(options)
 		if err != nil {
 			return

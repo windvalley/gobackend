@@ -50,8 +50,8 @@ mysql:
   # Default: 100
   max-open-connections: 100
   # in seconds
-  # Default: 10(s)
-  max-connection-lifetime: 10
+  # Default: 120(s)
+  max-connection-lifetime: 120
   # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
   # Default: 1
   log-level: 4
