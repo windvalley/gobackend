@@ -3,6 +3,7 @@ package errors
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -15,6 +16,7 @@ type formatInfo struct {
 	stack   *stack
 }
 
+//nolint:lll
 // Format implements fmt.Formatter. https://golang.org/pkg/fmt/#hdr-Printing
 //
 // Verbs:
@@ -91,6 +93,7 @@ func (w *withCode) Format(state fmt.State, verb rune) {
 
 func format(k int, jsonData []map[string]interface{}, str *bytes.Buffer, finfo *formatInfo,
 	sep string, flagDetail, flagTrace, modeJSON bool) ([]map[string]interface{}, *bytes.Buffer) {
+	//nolint:nestif
 	if modeJSON {
 		data := map[string]interface{}{}
 		if flagDetail || flagTrace {
@@ -145,7 +148,8 @@ func list(e error) []error {
 	ret := []error{}
 
 	if e != nil {
-		if w, ok := e.(interface{ Unwrap() error }); ok {
+		var w interface{ Unwrap() error }
+		if errors.As(e, &w) {
 			ret = append(ret, e)
 			ret = append(ret, list(w.Unwrap())...)
 		} else {
@@ -159,6 +163,7 @@ func list(e error) []error {
 func buildFormatInfo(e error) *formatInfo {
 	var finfo *formatInfo
 
+	//nolint:errorlint
 	switch err := e.(type) {
 	case *fundamental:
 		finfo = &formatInfo{

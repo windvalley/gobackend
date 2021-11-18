@@ -16,6 +16,7 @@ type String map[string]Empty
 func NewString(items ...string) String {
 	ss := String{}
 	ss.Insert(items...)
+
 	return ss
 }
 
@@ -28,6 +29,7 @@ func StringKeySet(theMap interface{}) String {
 	for _, keyValue := range v.MapKeys() {
 		ret.Insert(keyValue.Interface().(string))
 	}
+
 	return ret
 }
 
@@ -36,6 +38,7 @@ func (s String) Insert(items ...string) String {
 	for _, item := range items {
 		s[item] = Empty{}
 	}
+
 	return s
 }
 
@@ -44,12 +47,14 @@ func (s String) Delete(items ...string) String {
 	for _, item := range items {
 		delete(s, item)
 	}
+
 	return s
 }
 
 // Has returns true if and only if item is contained in the set.
 func (s String) Has(item string) bool {
 	_, contained := s[item]
+
 	return contained
 }
 
@@ -60,6 +65,7 @@ func (s String) HasAll(items ...string) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -70,6 +76,7 @@ func (s String) HasAny(items ...string) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -86,6 +93,7 @@ func (s String) Difference(s2 String) String {
 			result.Insert(key)
 		}
 	}
+
 	return result
 }
 
@@ -100,9 +108,11 @@ func (s String) Union(s2 String) String {
 	for key := range s {
 		result.Insert(key)
 	}
+
 	for key := range s2 {
 		result.Insert(key)
 	}
+
 	return result
 }
 
@@ -126,6 +136,7 @@ func (s String) Intersection(s2 String) String {
 			result.Insert(key)
 		}
 	}
+
 	return result
 }
 
@@ -136,6 +147,7 @@ func (s String) IsSuperset(s2 String) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -158,7 +170,9 @@ func (s String) List() []string {
 	for key := range s {
 		res = append(res, key)
 	}
+
 	sort.Sort(res)
+
 	return []string(res)
 }
 
@@ -168,6 +182,7 @@ func (s String) UnsortedList() []string {
 	for key := range s {
 		res = append(res, key)
 	}
+
 	return res
 }
 
@@ -175,9 +190,12 @@ func (s String) UnsortedList() []string {
 func (s String) PopAny() (string, bool) {
 	for key := range s {
 		s.Delete(key)
+
 		return key, true
 	}
+
 	var zeroValue string
+
 	return zeroValue, false
 }
 

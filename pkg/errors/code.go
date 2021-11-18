@@ -1,13 +1,14 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"sync"
 )
 
 var (
-	unknownCoder defaultCoder = defaultCoder{1, http.StatusInternalServerError, "An internal server error occurred", ""}
+	unknownCoder = defaultCoder{1, http.StatusInternalServerError, "An internal server error occurred", ""}
 )
 
 // Coder defines an interface for an error code detail information.
@@ -107,7 +108,8 @@ func ParseCoder(err error) Coder {
 		return nil
 	}
 
-	if v, ok := err.(*withCode); ok {
+	var v *withCode
+	if errors.As(err, &v) {
 		if coder, ok := codes[v.code]; ok {
 			return coder
 		}
@@ -118,7 +120,8 @@ func ParseCoder(err error) Coder {
 
 // IsCode reports whether any error in err's chain contains the given error code.
 func IsCode(err error, code int) bool {
-	if v, ok := err.(*withCode); ok {
+	var v *withCode
+	if errors.As(err, &v) {
 		if v.code == code {
 			return true
 		}
@@ -133,6 +136,7 @@ func IsCode(err error, code int) bool {
 	return false
 }
 
+//nolint:gochecknoinits
 func init() {
 	codes[unknownCoder.Code()] = unknownCoder
 }

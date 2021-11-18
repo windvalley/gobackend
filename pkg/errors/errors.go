@@ -93,6 +93,7 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 	"io"
 )
@@ -149,7 +150,8 @@ func WithStack(err error) error {
 		return nil
 	}
 
-	if e, ok := err.(*withCode); ok {
+	var e *withCode
+	if errors.As(err, &e) {
 		return &withCode{
 			err:   e.err,
 			code:  e.code,
@@ -173,7 +175,9 @@ func (w *withStack) Cause() error { return w.error }
 
 // Unwrap provides compatibility for Go 1.13 error chains.
 func (w *withStack) Unwrap() error {
-	if e, ok := w.error.(interface{ Unwrap() error }); ok {
+	var e interface{ Unwrap() error }
+
+	if errors.As(w.error, &e) {
 		return e.Unwrap()
 	}
 
@@ -186,8 +190,10 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 		if s.Flag('+') {
 			fmt.Fprintf(s, "%+v", w.Cause())
 			w.stack.Format(s, verb)
+
 			return
 		}
+
 		fallthrough
 	case 's':
 		_, _ = io.WriteString(s, w.Error())
@@ -203,7 +209,9 @@ func Wrap(err error, message string) error {
 	if err == nil {
 		return nil
 	}
-	if e, ok := err.(*withCode); ok {
+
+	var e *withCode
+	if errors.As(err, &e) {
 		return &withCode{
 			err:   fmt.Errorf(message),
 			code:  e.code,
@@ -216,6 +224,7 @@ func Wrap(err error, message string) error {
 		cause: err,
 		msg:   message,
 	}
+
 	return &withStack{
 		err,
 		callers(),
@@ -230,7 +239,8 @@ func Wrapf(err error, format string, args ...interface{}) error {
 		return nil
 	}
 
-	if e, ok := err.(*withCode); ok {
+	var e *withCode
+	if errors.As(err, &e) {
 		return &withCode{
 			err:   fmt.Errorf(format, args...),
 			code:  e.code,
@@ -243,6 +253,7 @@ func Wrapf(err error, format string, args ...interface{}) error {
 		cause: err,
 		msg:   fmt.Sprintf(format, args...),
 	}
+
 	return &withStack{
 		err,
 		callers(),
@@ -255,6 +266,7 @@ func WithMessage(err error, message string) error {
 	if err == nil {
 		return nil
 	}
+
 	return &withMessage{
 		cause: err,
 		msg:   message,
@@ -267,6 +279,7 @@ func WithMessagef(err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
+
 	return &withMessage{
 		cause: err,
 		msg:   fmt.Sprintf(format, args...),
@@ -290,8 +303,10 @@ func (w *withMessage) Format(s fmt.State, verb rune) {
 		if s.Flag('+') {
 			fmt.Fprintf(s, "%+v\n", w.Cause())
 			_, _ = io.WriteString(s, w.msg)
+
 			return
 		}
+
 		fallthrough
 	case 's', 'q':
 		_, _ = io.WriteString(s, w.Error())
@@ -354,16 +369,17 @@ func Cause(err error) error {
 	}
 
 	for err != nil {
-		cause, ok := err.(causer)
-		if !ok {
+		var e causer
+		if errors.As(err, &e) {
 			break
 		}
 
-		if cause.Cause() == nil {
+		if e.Cause() == nil {
 			break
 		}
 
-		err = cause.Cause()
+		err = e.Cause()
 	}
+
 	return err
 }

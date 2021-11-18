@@ -39,6 +39,7 @@ func NewAggregate(errlist []error) Aggregate {
 	if len(errs) == 0 {
 		return nil
 	}
+
 	return aggregate(errs)
 }
 
@@ -68,11 +69,14 @@ func (agg aggregate) Error() string {
 			result += ", "
 		}
 		result += msg
+
 		return false
 	})
+
 	if len(seenerrs) == 1 {
 		return result
 	}
+
 	return "[" + result + "]"
 }
 
@@ -84,6 +88,7 @@ func (agg aggregate) Is(target error) bool {
 
 func (agg aggregate) visit(f func(err error) bool) bool {
 	for _, err := range agg {
+		//nolint:errorlint
 		switch err := err.(type) {
 		case aggregate:
 			if match := err.visit(f); match {
@@ -124,12 +129,16 @@ func FilterOut(err error, fns ...Matcher) error {
 	if err == nil {
 		return nil
 	}
-	if agg, ok := err.(Aggregate); ok {
+
+	var agg Aggregate
+	if errors.As(err, &agg) {
 		return NewAggregate(filterErrors(agg.Errors(), fns...))
 	}
+
 	if !matchesError(err, fns...) {
 		return err
 	}
+
 	return nil
 }
 
@@ -140,6 +149,7 @@ func matchesError(err error, fns ...Matcher) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -155,6 +165,7 @@ func filterErrors(list []error, fns ...Matcher) []error {
 			result = append(result, r)
 		}
 	}
+
 	return result
 }
 
@@ -165,8 +176,10 @@ func Flatten(agg Aggregate) Aggregate {
 	if agg == nil {
 		return nil
 	}
+
+	var a Aggregate
 	for _, err := range agg.Errors() {
-		if a, ok := err.(Aggregate); ok {
+		if errors.As(err, &a) {
 			r := Flatten(a)
 			if r != nil {
 				result = append(result, r.Errors()...)
@@ -177,6 +190,7 @@ func Flatten(agg Aggregate) Aggregate {
 			}
 		}
 	}
+
 	return NewAggregate(result)
 }
 
@@ -193,13 +207,15 @@ func CreateAggregateFromMessageCountMap(m MessageCountMap) Aggregate {
 		}
 		result = append(result, fmt.Errorf("%v%v", errStr, countStr))
 	}
+
 	return NewAggregate(result)
 }
 
 // Reduce will return err or, if err is an Aggregate and only has one item,
 // the first item in the aggregate.
 func Reduce(err error) error {
-	if agg, ok := err.(Aggregate); ok && err != nil {
+	var agg Aggregate
+	if errors.As(err, &agg) && err != nil {
 		switch len(agg.Errors()) {
 		case 1:
 			return agg.Errors()[0]
@@ -207,6 +223,7 @@ func Reduce(err error) error {
 			return nil
 		}
 	}
+
 	return err
 }
 
@@ -218,12 +235,14 @@ func AggregateGoroutines(funcs ...func() error) Aggregate {
 	for _, f := range funcs {
 		go func(f func() error) { errChan <- f() }(f)
 	}
+
 	errs := make([]error, 0)
 	for i := 0; i < cap(errChan); i++ {
 		if err := <-errChan; err != nil {
 			errs = append(errs, err)
 		}
 	}
+
 	return NewAggregate(errs)
 }
 
