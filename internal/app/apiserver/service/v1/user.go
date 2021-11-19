@@ -25,6 +25,10 @@ type userService struct {
 	store store.Factory
 }
 
+// If type *userService not implemented interface UserSrv, program will panic at compile stage.
+// This line can also be written as:
+//    var us *userService
+//    var _ UserSrv = us
 var _ UserSrv = (*userService)(nil)
 
 func newUsers(srv *service) *userService {

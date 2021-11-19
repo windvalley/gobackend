@@ -8,7 +8,10 @@ server:
   healthz: true
   # Option values: secure, nocache, cors, dump, options.
   # Default: ""
-  middlewares: secure,nocache,cors
+  middlewares:
+    - secure
+    - nocache
+    - cors
   # Self ping check after server start;
   # Default: 3
   max-ping-count: 3
@@ -76,10 +79,14 @@ log:
   disable-stacktrace: false
   # All log level messages will be writen to;
   # Default: stdout
-  output-paths: stdout,./logs/gobackend-apiserver.log
+  output-paths:
+    - stdout
+    - ./logs/gobackend-apiserver.log
   # Only log internal errors will be written to;
   # Default: stderr
-  error-output-paths: stderr,./logs/gobackend-apiserver.error.log
+  error-output-paths:
+    - stderr
+    - ./logs/gobackend-apiserver.error.log
   # Rotate log files or not;
   # Default: false
   enable-rotate: true

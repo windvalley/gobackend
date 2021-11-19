@@ -14,8 +14,6 @@ import (
 	"gobackend/pkg/term"
 	"gobackend/pkg/version"
 	"gobackend/pkg/version/verflag"
-
-	"gobackend/internal/app/apiserver/options"
 )
 
 var (
@@ -262,7 +260,24 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	log.Init(a.options.(*options.Options).Log)
+	logOptions := &log.Options{
+		Name:              viper.GetString("log.name"),
+		Level:             viper.GetString("log.level"),
+		Format:            viper.GetString("log.format"),
+		DisableColor:      viper.GetBool("log.disable-color"),
+		DisableCaller:     viper.GetBool("log.disable-caller"),
+		DisableStacktrace: viper.GetBool("log.disable-stacktrace"),
+		OutputPaths:       viper.GetStringSlice("log.output-paths"),
+		ErrorOutputPaths:  viper.GetStringSlice("log.error-output-paths"),
+		EnableRotate:      viper.GetBool("log.enable-rotate"),
+		RotateMaxSize:     viper.GetInt("log.rotate-max-size"),
+		RotateMaxAge:      viper.GetInt("log.rotate-max-age"),
+		RotateMaxBackups:  viper.GetInt("log.rotate-max-backups"),
+		RotateLocaltime:   viper.GetBool("log.rotate-localtime"),
+		RotateCompress:    viper.GetBool("log.rotate-compress"),
+	}
+
+	log.Init(logOptions)
 	defer log.Sync()
 
 	if !a.silence {
