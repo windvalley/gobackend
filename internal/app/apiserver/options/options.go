@@ -3,10 +3,10 @@ package options
 import (
 	"encoding/json"
 
-	genericoptions "gobackend/internal/pkg/options"
 	"gobackend/internal/pkg/server"
 	cliflag "gobackend/pkg/flag"
-	"gobackend/pkg/log"
+
+	genericoptions "gobackend/internal/pkg/options"
 )
 
 // Options ...
@@ -16,7 +16,7 @@ type Options struct {
 	SecureServing           *genericoptions.SecureServingOptions   `json:"secure"   mapstructure:"secure"`
 	MySQLOptions            *genericoptions.MySQLOptions           `json:"mysql"    mapstructure:"mysql"`
 	FeatureOptions          *genericoptions.FeatureOptions         `json:"feature"  mapstructure:"feature"`
-	Log                     *log.Options                           `json:"log"      mapstructure:"log"`
+	Log                     *genericoptions.LogOptions             `json:"log"      mapstructure:"log"`
 }
 
 // New creates a new Options object with default parameters.
@@ -27,7 +27,7 @@ func New() *Options {
 		SecureServing:           genericoptions.NewSecureServingOptions(),
 		MySQLOptions:            genericoptions.NewMySQLOptions(),
 		FeatureOptions:          genericoptions.NewFeatureOptions(),
-		Log:                     log.NewOptions(),
+		Log:                     genericoptions.NewLogOptions(),
 	}
 
 	return &o
