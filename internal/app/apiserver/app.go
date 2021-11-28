@@ -18,6 +18,7 @@ func NewApp(basename string) *app.App {
 		basename,
 		app.WithOptions(opts),
 		app.WithDescription(commandDesc),
+		app.WithProcessLock("/tmp"),
 		app.WithDefaultValidArgs(),
 		app.WithRunFunc(run(opts)),
 	)

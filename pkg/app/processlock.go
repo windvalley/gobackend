@@ -1,4 +1,4 @@
-package util
+package app
 
 import (
 	"fmt"
@@ -10,20 +10,7 @@ import (
 	"syscall"
 )
 
-// ProcessLock usage:
-//func main() {
-//abPath, err := filepath.Abs(filepath.Dir(os.Args[0]))
-//if err != nil {
-//panic(err)
-//}
-//lock, lockFile, err := util.ProcessLock(abPath+"/logs")
-//if err != nil {
-//logger.Log.Fatal(err)
-//}
-//defer os.Remove(lockFile)
-//defer lock.Close()
-//}
-func ProcessLock(pidDir string) (*os.File, string, error) {
+func processLock(pidDir string) (*os.File, string, error) {
 	pidDir = strings.TrimSuffix(pidDir, "/") + "/"
 	lockfileName := filepath.Base(os.Args[0])
 	lockfileFullName := pidDir + lockfileName + ".pid"
@@ -41,7 +28,7 @@ func ProcessLock(pidDir string) (*os.File, string, error) {
 	if len(prePIDByte) != 0 {
 		prePID, err1 := strconv.Atoi(string(prePIDByte))
 		if err1 != nil {
-			return file, lockfileFullName, err
+			return file, lockfileFullName, err1
 		}
 
 		if err2 := syscall.Kill(prePID, 0); err2 == nil {

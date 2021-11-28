@@ -64,6 +64,8 @@ type App struct {
 	description string
 	options     CliOptions
 	runFunc     RunFunc
+	processLock bool
+	pidDir      string
 	silence     bool
 	noVersion   bool
 	noConfig    bool
@@ -107,6 +109,14 @@ func WithDescription(desc string) Option {
 func WithSilence() Option {
 	return func(a *App) {
 		a.silence = true
+	}
+}
+
+// WithProcessLock make sure only one process is running at a time.
+func WithProcessLock(pidDir string) Option {
+	return func(a *App) {
+		a.processLock = true
+		a.pidDir = pidDir
 	}
 }
 
@@ -229,6 +239,18 @@ func (a *App) buildCommand() {
 
 // Run is used to launch the application.
 func (a *App) Run() {
+	if a.processLock {
+		lock, lockFile, err := processLock(a.pidDir)
+		if err != nil {
+			fmt.Printf("%v\n", err)
+
+			return
+		}
+
+		defer os.Remove(lockFile)
+		defer lock.Close()
+	}
+
 	if err := a.cmd.Execute(); err != nil {
 		fmt.Printf("%v %v\n", color.RedString("Error:"), err)
 		os.Exit(1)
