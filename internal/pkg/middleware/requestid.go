@@ -18,12 +18,12 @@ func RequestID() gin.HandlerFunc {
 
 		if rid == "" {
 			rid = uuid.Must(uuid.NewV4()).String()
-			c.Request.Header.Set(XRequestIDKey, rid)
-			c.Set(XRequestIDKey, rid)
 		}
 
-		// Set XRequestIDKey header
+		c.Request.Header.Set(XRequestIDKey, rid)
+		c.Set(XRequestIDKey, rid)
 		c.Writer.Header().Set(XRequestIDKey, rid)
+
 		c.Next()
 	}
 }
