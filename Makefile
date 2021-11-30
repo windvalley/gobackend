@@ -41,8 +41,19 @@ include scripts/makefiles/tools.makefile
 # Print help information by default.
 .DEFAULT_GOAL := help
 
+##  all: Make gen, lint, cover, build
 .PHONY: all
 all: gen lint cover build
+
+##  run.dev: Run in development mode.
+.PHONY: run.dev
+run.dev:
+	@./scripts/run.sh dev
+
+##  run.test: Run in test mode.
+.PHONY: run.test
+run.test:
+	@./scripts/run.sh test
 
 ##  build: Compile packages and dependencies to generate bin file for current platform.
 .PHONY: build
