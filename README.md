@@ -24,6 +24,10 @@ Enterprise-grade Go web backend scaffolding based on
 
 - Server graceful shutdown.
 
+- Process lock.
+
+- Custom your own environment variable to specify run environments(dev/test/prod).
+
 - Generate error code documentation file and necessary error code source files.
 
 - Use `Makefile` to manage the project efficiently and conveniently.
