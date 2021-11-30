@@ -129,6 +129,7 @@ func New(name string, binaryName string, opts ...Option) *App {
 	a := &App{
 		name:       name,
 		binaryName: binaryName,
+		runModeEnv: "RUN_MODE",
 	}
 
 	for _, o := range opts {
@@ -275,6 +276,14 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 
 		if !a.noVersion {
 			log.Infof("Version: `%s`", version.Get().ToJSON())
+		}
+
+		if a.runModeEnv != "" {
+			log.Infof(
+				"Run environment variable: %s, value: %s",
+				a.runModeEnv,
+				os.Getenv(a.runModeEnv),
+			)
 		}
 
 		if !a.noConfig {
