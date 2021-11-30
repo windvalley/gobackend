@@ -36,6 +36,12 @@ Enterprise-grade Go web backend scaffolding based on
 
 ## Quik Start
 
+```sh
+$ git clone --depth 1 https://github.com/windvalley/gobackend.git
+
+$ cd gobackend
+```
+
 Edit `configs/dev.gobackend-apiserver.yaml`:
 
 ```yaml
@@ -54,13 +60,55 @@ mysql:
 Create database:
 
 ```sh
-mysql -h 127.0.0.1 -P 3306 -uroot -p'123456' -e "create database gobackend;"
+$ mysql -h 127.0.0.1 -P 3306 -uroot -p'123456' -e "create database gobackend;"
 ```
 
 Project run:
 
 ```sh
-./scripts/run_dev.sh
+$ make run.dev
 ```
 
-<img width="599" alt="rundev-shot" src="https://user-images.githubusercontent.com/6139938/141258757-b994bc59-7eee-462e-91a1-ece516035f8a.png">
+<img width="772" alt="run_dev" src="https://user-images.githubusercontent.com/6139938/144012376-df174b5e-0c5a-4318-817e-7d9b30e4f5cd.png">
+
+## Makefile
+
+```sh
+$ make
+
+Usage: make [TARGETS] [OPTIONS]
+
+Targets:
+
+   all               Make gen, lint, cover, build
+   run.dev           Run in development mode.
+   run.test          Run in test mode.
+   build             Compile packages and dependencies to generate bin file for current platform.
+   build.multiarch   Build for multiple platforms. See option PLATFORMS.
+   image             Build docker images for host arch.
+   push              Build docker images for host arch and push images to registry.
+   lint              Check syntax and style of Go source code.
+   test              Run unit test.
+   cover             Run unit test and get test coverage.
+   gen               Generate necessary source code files and doc files.
+   clean             Remove all files that are created by building.
+   help              Show this help.
+
+Options:
+
+   BINS        The binaries to build. Default is all commands in cmd/.
+               This option is available for: make build/build.multiarch
+               Example: make build BINS="apiserver otherbin"
+   IMAGES      Docker images to build. Default is all commands in cmd/.
+               This option is available when using: make image/image.multiarch.
+               Example: make image.multiarch IMAGES="apiserver otherbin"
+   PLATFORMS   The multiple platforms to build.
+               Default is 'darwin_amd64 darwin_arm64 linux_amd64 linux_arm64 windows_amd64'.
+               This option is available when using: make build.multiarch.
+               Example: make build.multiarch PLATFORMS="linux_amd64"
+```
+
+## License
+
+This project is under the MIT License.
+See the [LICENSE](LICENSE) file for the full license text.
