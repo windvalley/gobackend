@@ -16,66 +16,10 @@ import (
 	"gobackend/pkg/version/verflag"
 )
 
-var (
-	//nolint: deadcode,unused,varcheck
-	usageTemplate = fmt.Sprintf(`%s{{if .Runnable}}
-  %s{{end}}{{if .HasAvailableSubCommands}}
-  %s{{end}}{{if gt (len .Aliases) 0}}
+// RunFunc defines the application's startup callback function.
+type RunFunc func(binaryName string) error
 
-%s
-  {{.NameAndAliases}}{{end}}{{if .HasExample}}
-
-%s
-{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
-
-%s{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-  %s {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
-
-%s
-{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
-
-%s
-{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
-
-%s{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
-  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
-
-Use "%s --help" for more information about a command.{{end}}
-`,
-		color.CyanString("Usage:"),
-		color.GreenString("{{.UseLine}}"),
-		color.GreenString("{{.CommandPath}} [command]"),
-		color.CyanString("Aliases:"),
-		color.CyanString("Examples:"),
-		color.CyanString("Available Commands:"),
-		color.GreenString("{{rpad .Name .NamePadding }}"),
-		color.CyanString("Flags:"),
-		color.CyanString("Global Flags:"),
-		color.CyanString("Additional help topics:"),
-		color.GreenString("{{.CommandPath}} [command]"),
-	)
-)
-
-// App is the main structure of a cli application.
-// It is recommended that an app be created with the app.NewApp() function.
-type App struct {
-	basename    string
-	name        string
-	description string
-	options     CliOptions
-	runFunc     RunFunc
-	processLock bool
-	pidDir      string
-	silence     bool
-	noVersion   bool
-	noConfig    bool
-	commands    []*Command
-	args        cobra.PositionalArgs
-	cmd         *cobra.Command
-}
-
-// Option defines optional parameters for initializing the application
-// structure.
+// Option defines optional parameters for initializing the application structure.
 type Option func(*App)
 
 // WithOptions to open the application's function to read from the command line
@@ -85,9 +29,6 @@ func WithOptions(opt CliOptions) Option {
 		a.options = opt
 	}
 }
-
-// RunFunc defines the application's startup callback function.
-type RunFunc func(basename string) error
 
 // WithRunFunc is used to set the application startup callback function option.
 func WithRunFunc(run RunFunc) Option {
@@ -156,12 +97,30 @@ func WithDefaultValidArgs() Option {
 	}
 }
 
+// App is the main structure of a cli application.
+// It is recommended that an app be created with the app.NewApp() function.
+type App struct {
+	name        string
+	binaryName  string
+	description string
+	options     CliOptions
+	runFunc     RunFunc
+	processLock bool
+	pidDir      string
+	silence     bool
+	noVersion   bool
+	noConfig    bool
+	commands    []*Command
+	args        cobra.PositionalArgs
+	cmd         *cobra.Command
+}
+
 // New creates a new application instance based on the given application name,
 // binary name, and other options.
-func New(name string, basename string, opts ...Option) *App {
+func New(name string, binaryName string, opts ...Option) *App {
 	a := &App{
-		name:     name,
-		basename: basename,
+		name:       name,
+		binaryName: binaryName,
 	}
 
 	for _, o := range opts {
@@ -173,9 +132,34 @@ func New(name string, basename string, opts ...Option) *App {
 	return a
 }
 
+// Run is used to launch the application.
+func (a *App) Run() {
+	if a.processLock {
+		lock, lockFile, err := processLock(a.pidDir)
+		if err != nil {
+			fmt.Printf("%v\n", err)
+
+			return
+		}
+
+		defer os.Remove(lockFile)
+		defer lock.Close()
+	}
+
+	if err := a.cmd.Execute(); err != nil {
+		fmt.Printf("%v %v\n", color.RedString("Error:"), err)
+		os.Exit(1)
+	}
+}
+
+// Command returns cobra command instance inside the application.
+func (a *App) Command() *cobra.Command {
+	return a.cmd
+}
+
 func (a *App) buildCommand() {
 	cmd := cobra.Command{
-		Use:   FormatBaseName(a.basename),
+		Use:   FormatBinaryName(a.binaryName),
 		Short: a.name,
 		Long:  a.description,
 		// Stop printing usage when the command errors or not.
@@ -184,7 +168,6 @@ func (a *App) buildCommand() {
 		Args:          a.args,
 	}
 
-	//cmd.SetUsageTemplate(usageTemplate)
 	cmd.SetOut(os.Stdout)
 	cmd.SetErr(os.Stderr)
 	cmd.Flags().SortFlags = true
@@ -237,31 +220,6 @@ func (a *App) buildCommand() {
 	a.cmd = &cmd
 }
 
-// Run is used to launch the application.
-func (a *App) Run() {
-	if a.processLock {
-		lock, lockFile, err := processLock(a.pidDir)
-		if err != nil {
-			fmt.Printf("%v\n", err)
-
-			return
-		}
-
-		defer os.Remove(lockFile)
-		defer lock.Close()
-	}
-
-	if err := a.cmd.Execute(); err != nil {
-		fmt.Printf("%v %v\n", color.RedString("Error:"), err)
-		os.Exit(1)
-	}
-}
-
-// Command returns cobra command instance inside the application.
-func (a *App) Command() *cobra.Command {
-	return a.cmd
-}
-
 func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 	cliflag.PrintFlags(cmd.Flags())
 
@@ -270,7 +228,7 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		verflag.PrintAndExitIfRequested()
 	}
 
-	parseConfigFile(a.basename)
+	parseConfigFile(a.binaryName)
 
 	if !a.noConfig {
 		if err := viper.BindPFlags(cmd.Flags()); err != nil {
@@ -323,7 +281,7 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 	}
 
 	if a.runFunc != nil {
-		return a.runFunc(a.basename)
+		return a.runFunc(a.binaryName)
 	}
 
 	return nil

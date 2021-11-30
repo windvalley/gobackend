@@ -7,15 +7,15 @@ import (
 	"gobackend/internal/app/apiserver/options"
 )
 
-const commandDesc = `Go Web Demo
-`
+const commandDesc = `
+Go Web Backend Demo.`
 
-// NewApp creates a App object with default parameters.
-func NewApp(basename string) *app.App {
+// NewApp creates an App object with default parameters.
+func NewApp(binaryName string) *app.App {
 	opts := options.New()
 
 	application := app.New("APIServer",
-		basename,
+		binaryName,
 		app.WithOptions(opts),
 		app.WithDescription(commandDesc),
 		app.WithProcessLock("/tmp"),
@@ -27,7 +27,7 @@ func NewApp(basename string) *app.App {
 }
 
 func run(opts *options.Options) app.RunFunc {
-	return func(basename string) error {
+	return func(binaryName string) error {
 		cfg := config.New(opts)
 
 		server, err := createAPIServer(cfg)

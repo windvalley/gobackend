@@ -114,14 +114,14 @@ func (a *App) AddCommands(cmds ...*Command) {
 	a.commands = append(a.commands, cmds...)
 }
 
-// FormatBaseName is formatted as an executable file name under different
+// FormatBinaryName is formatted as an executable file name under different
 // operating systems according to the given name.
-func FormatBaseName(basename string) string {
+func FormatBinaryName(binaryName string) string {
 	// Make case-insensitive and strip executable suffix if present
 	if runtime.GOOS == "windows" {
-		basename = strings.ToLower(basename)
-		basename = strings.TrimSuffix(basename, ".exe")
+		binaryName = strings.ToLower(binaryName)
+		binaryName = strings.TrimSuffix(binaryName, ".exe")
 	}
 
-	return basename
+	return binaryName
 }
