@@ -61,6 +61,13 @@ func WithProcessLock(pidDir string) Option {
 	}
 }
 
+// WithRunModeEnv custom your own environment variable to specify run environments(dev/test/prod).
+func WithRunModeEnv(runModeEnv string) Option {
+	return func(a *App) {
+		a.runModeEnv = runModeEnv
+	}
+}
+
 // WithNoVersion set the application does not provide version flag.
 func WithNoVersion() Option {
 	return func(a *App) {
@@ -105,6 +112,7 @@ type App struct {
 	description string
 	options     CliOptions
 	runFunc     RunFunc
+	runModeEnv  string
 	processLock bool
 	pidDir      string
 	silence     bool
@@ -228,7 +236,7 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		verflag.PrintAndExitIfRequested()
 	}
 
-	parseConfigFile(a.binaryName)
+	parseConfigFile(a.binaryName, a.runModeEnv)
 
 	if !a.noConfig {
 		if err := viper.BindPFlags(cmd.Flags()); err != nil {

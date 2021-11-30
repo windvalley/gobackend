@@ -20,6 +20,7 @@ func NewApp(binaryName string) *app.App {
 		app.WithDescription(commandDesc),
 		app.WithProcessLock("/tmp"),
 		app.WithDefaultValidArgs(),
+		app.WithRunModeEnv("RUN_MODE"),
 		app.WithRunFunc(run(opts)),
 	)
 

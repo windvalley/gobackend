@@ -67,7 +67,7 @@ log:
   level: info
   # console, json;
   # Default: console
-  format: console
+  format: json
   # Default: false
   disable-color: false
   # caller will print filename, funcname, line number;
