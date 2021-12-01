@@ -43,3 +43,7 @@ jobs:
       - name: Build binary for host platform
         run: |
           make build
+
+      - name: Build docker image
+        run: |
+          make image
