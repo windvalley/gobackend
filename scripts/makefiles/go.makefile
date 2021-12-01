@@ -73,7 +73,7 @@ go.lint: tools.verify.golangci-lint
 	@golangci-lint run -c ${ROOT_DIR}/.golangci.yaml ${ROOT_DIR}/...
 
 .PHONY: go.test
-go.test: tools.verify.go-junit-report tools.verify.gsed
+go.test: tools.verify.go-junit-report
 	@echo "==========> Run unit test"
 	@${GO} test -race -cover -coverprofile=${OUTPUT_DIR}/coverage.out \
 		-timeout=10m -short -v `go list ./...|\
