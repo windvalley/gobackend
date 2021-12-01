@@ -76,7 +76,10 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 	ret := &v1.UserList{}
 	ol := gormtool.Unpointer(opts.Offset, opts.Limit)
 
-	where := ""
+	var (
+		where string
+		err   error
+	)
 
 	// opt.FieldSelector e.g.:
 	// https://.../?field_selector=name==levin,email=n@gmail.com
@@ -86,9 +89,15 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 	for _, require := range selector.Requirements() {
 		switch require.Field {
 		case "name":
-			where = buildWhere(require, where)
+			where, err = buildWhere(require, where)
+			if err != nil {
+				return nil, err
+			}
 		case "email":
-			where = buildWhere(require, where)
+			where, err = buildWhere(require, where)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -104,7 +113,7 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 	return ret, d.Error
 }
 
-func buildWhere(require fields.Requirement, where string) string {
+func buildWhere(require fields.Requirement, where string) (string, error) {
 	if where != "" {
 		where += " and "
 	}
@@ -116,7 +125,9 @@ func buildWhere(require fields.Requirement, where string) string {
 		where += fmt.Sprintf("%s like '%%%v%%'", require.Field, require.Value)
 	case "!=":
 		where += fmt.Sprintf("%s %s '%v'", require.Field, require.Operator, require.Value)
+	default:
+		return "", fmt.Errorf("unknown operator '%s'", require.Operator)
 	}
 
-	return where
+	return where, nil
 }
