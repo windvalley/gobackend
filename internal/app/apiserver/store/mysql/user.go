@@ -90,15 +90,13 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 		switch require.Field {
 		case "name":
 			where, err = buildWhere(require, where)
-			if err != nil {
-				return nil, err
-			}
 		case "email":
 			where, err = buildWhere(require, where)
-			if err != nil {
-				return nil, err
-			}
 		}
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	d := u.db.Where(where).
