@@ -1,4 +1,6 @@
-# gobackend
+# GoBackend
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
 
 Enterprise-grade Go web backend scaffolding based on
 [cobra][1], [viper][2], [pflag][3], [zap][4], [gorm][5], [gin][6].
