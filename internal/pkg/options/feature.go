@@ -33,7 +33,7 @@ func (o *FeatureOptions) ApplyTo(c *server.Config) error {
 // Validate is used to parse and validate the parameters entered by the user at
 // the command line when the program starts.
 func (o *FeatureOptions) Validate() []error {
-	return []error{}
+	return nil
 }
 
 // AddFlags adds flags related to features for a specific api server to the

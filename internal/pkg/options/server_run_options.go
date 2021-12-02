@@ -1,8 +1,11 @@
 package options
 
 import (
+	"fmt"
+
 	"github.com/spf13/pflag"
 
+	"gobackend/internal/pkg/middleware"
 	"gobackend/internal/pkg/server"
 )
 
@@ -34,10 +37,35 @@ func (s *ServerRunOptions) ApplyTo(c *server.Config) error {
 }
 
 // Validate checks validation of ServerRunOptions.
-func (s *ServerRunOptions) Validate() []error {
-	errors := []error{}
+func (s *ServerRunOptions) Validate() (errs []error) {
+	if s.Mode != "debug" && s.Mode != "test" && s.Mode != "release" {
+		errs = append(errs, fmt.Errorf(
+			"unknown server.mode: %s, available mode: [debug release test]",
+			s.Mode,
+		))
+	}
 
-	return errors
+	var availableMiddlewares, invalidMiddlewares []string
+
+	for _, m := range s.Middlewares {
+		if _, ok := middleware.Middlewares[m]; !ok {
+			invalidMiddlewares = append(invalidMiddlewares, m)
+		}
+	}
+
+	if len(invalidMiddlewares) != 0 {
+		for m := range middleware.Middlewares {
+			availableMiddlewares = append(availableMiddlewares, m)
+		}
+
+		errs = append(errs, fmt.Errorf(
+			"unknown server.middlewares: %v, available middlewares: %v",
+			invalidMiddlewares,
+			availableMiddlewares,
+		))
+	}
+
+	return
 }
 
 // AddFlags adds flags for a specific APIServer to the specified FlagSet.

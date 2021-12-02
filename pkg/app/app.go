@@ -269,6 +269,12 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 	log.Init(logOptions)
 	defer log.Sync()
 
+	if a.options != nil {
+		if err := a.applyOptionRules(); err != nil {
+			return err
+		}
+	}
+
 	if !a.silence {
 		printWorkingDir()
 
@@ -288,12 +294,6 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 
 		if !a.noConfig {
 			log.Infof("Config file used: `%s`", viper.ConfigFileUsed())
-		}
-	}
-
-	if a.options != nil {
-		if err := a.applyOptionRules(); err != nil {
-			return err
 		}
 	}
 

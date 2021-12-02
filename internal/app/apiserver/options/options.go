@@ -11,23 +11,23 @@ import (
 
 // Options ...
 type Options struct {
-	GenericServerRunOptions *genericoptions.ServerRunOptions       `json:"server"   mapstructure:"server"`
-	InsecureServing         *genericoptions.InsecureServingOptions `json:"insecure" mapstructure:"insecure"`
-	SecureServing           *genericoptions.SecureServingOptions   `json:"secure"   mapstructure:"secure"`
-	MySQLOptions            *genericoptions.MySQLOptions           `json:"mysql"    mapstructure:"mysql"`
-	FeatureOptions          *genericoptions.FeatureOptions         `json:"feature"  mapstructure:"feature"`
-	Log                     *genericoptions.LogOptions             `json:"log"      mapstructure:"log"`
+	GenericServerRun *genericoptions.ServerRunOptions       `json:"server"   mapstructure:"server"`
+	InsecureServing  *genericoptions.InsecureServingOptions `json:"insecure" mapstructure:"insecure"`
+	SecureServing    *genericoptions.SecureServingOptions   `json:"secure"   mapstructure:"secure"`
+	MySQL            *genericoptions.MySQLOptions           `json:"mysql"    mapstructure:"mysql"`
+	Feature          *genericoptions.FeatureOptions         `json:"feature"  mapstructure:"feature"`
+	Log              *genericoptions.LogOptions             `json:"log"      mapstructure:"log"`
 }
 
 // New creates a new Options object with default parameters.
 func New() *Options {
 	o := Options{
-		GenericServerRunOptions: genericoptions.NewServerRunOptions(),
-		InsecureServing:         genericoptions.NewInsecureServingOptions(),
-		SecureServing:           genericoptions.NewSecureServingOptions(),
-		MySQLOptions:            genericoptions.NewMySQLOptions(),
-		FeatureOptions:          genericoptions.NewFeatureOptions(),
-		Log:                     genericoptions.NewLogOptions(),
+		GenericServerRun: genericoptions.NewServerRunOptions(),
+		InsecureServing:  genericoptions.NewInsecureServingOptions(),
+		SecureServing:    genericoptions.NewSecureServingOptions(),
+		MySQL:            genericoptions.NewMySQLOptions(),
+		Feature:          genericoptions.NewFeatureOptions(),
+		Log:              genericoptions.NewLogOptions(),
 	}
 
 	return &o
@@ -35,7 +35,7 @@ func New() *Options {
 
 // ApplyTo applies the run options to the method receiver and returns self.
 func (o *Options) ApplyTo(c *server.Config) (lastErr error) {
-	if lastErr = o.GenericServerRunOptions.ApplyTo(c); lastErr != nil {
+	if lastErr = o.GenericServerRun.ApplyTo(c); lastErr != nil {
 		return
 	}
 
@@ -47,7 +47,7 @@ func (o *Options) ApplyTo(c *server.Config) (lastErr error) {
 		return
 	}
 
-	if lastErr = o.FeatureOptions.ApplyTo(c); lastErr != nil {
+	if lastErr = o.Feature.ApplyTo(c); lastErr != nil {
 		return
 	}
 
@@ -56,11 +56,11 @@ func (o *Options) ApplyTo(c *server.Config) (lastErr error) {
 
 // Flags returns flags for a specific APIServer by section name.
 func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
-	o.GenericServerRunOptions.AddFlags(fss.FlagSet("generic"))
+	o.GenericServerRun.AddFlags(fss.FlagSet("generic"))
 	o.InsecureServing.AddFlags(fss.FlagSet("insecure serving"))
 	o.SecureServing.AddFlags(fss.FlagSet("secure serving"))
-	o.MySQLOptions.AddFlags(fss.FlagSet("mysql"))
-	o.FeatureOptions.AddFlags(fss.FlagSet("features"))
+	o.MySQL.AddFlags(fss.FlagSet("mysql"))
+	o.Feature.AddFlags(fss.FlagSet("features"))
 	o.Log.AddFlagsTo(fss.FlagSet("logs"))
 
 	return fss
@@ -81,11 +81,11 @@ func (o *Options) Complete() error {
 func (o *Options) Validate() []error {
 	var errs []error
 
-	errs = append(errs, o.GenericServerRunOptions.Validate()...)
+	errs = append(errs, o.GenericServerRun.Validate()...)
 	errs = append(errs, o.InsecureServing.Validate()...)
 	errs = append(errs, o.SecureServing.Validate()...)
-	errs = append(errs, o.MySQLOptions.Validate()...)
-	errs = append(errs, o.FeatureOptions.Validate()...)
+	errs = append(errs, o.MySQL.Validate()...)
+	errs = append(errs, o.Feature.Validate()...)
 	errs = append(errs, o.Log.Validate()...)
 
 	return errs

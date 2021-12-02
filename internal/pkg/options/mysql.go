@@ -1,9 +1,12 @@
 package options
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/spf13/pflag"
+
+	"gobackend/internal/pkg/gormlog"
 )
 
 // MySQLOptions defines options for mysql database.
@@ -35,10 +38,15 @@ func NewMySQLOptions() *MySQLOptions {
 }
 
 // Validate verifies flags passed to MySQLOptions.
-func (o *MySQLOptions) Validate() []error {
-	errs := []error{}
+func (o *MySQLOptions) Validate() (errs []error) {
+	if _, ok := gormlog.LogLevelMap[o.LogLevel]; !ok {
+		errs = append(errs, fmt.Errorf(
+			"unknown mysql.log-level: %s, available log level: [silent error warn info]",
+			o.LogLevel,
+		))
+	}
 
-	return errs
+	return
 }
 
 // AddFlags adds flags related to mysql storage for a specific APIServer to the specified FlagSet.
@@ -94,7 +102,7 @@ func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet) {
 
 	fs.StringVar(
 		&o.LogLevel,
-		"mysql.log-mode",
+		"mysql.log-level",
 		o.LogLevel,
 		"Specify gorm log level: silent/error/warn/info.",
 	)

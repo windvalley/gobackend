@@ -38,7 +38,8 @@ const (
 	Info
 )
 
-var logLevelMap = map[string]int{
+// LogLevelMap to gorm log level.
+var LogLevelMap = map[string]int{
 	"silent": 1,
 	"error":  2,
 	"warn":   3,
@@ -71,7 +72,7 @@ func New(level string) gormlogger.Interface {
 	config := Config{
 		SlowThreshold: 200 * time.Millisecond,
 		Colorful:      false,
-		LogLevel:      gormlogger.LogLevel(logLevelMap[level]),
+		LogLevel:      gormlogger.LogLevel(LogLevelMap[level]),
 	}
 
 	if config.Colorful {

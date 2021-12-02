@@ -2,10 +2,14 @@ package options
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/pflag"
 	"go.uber.org/zap/zapcore"
+
+	"gobackend/pkg/util"
 )
 
 const (
@@ -152,17 +156,79 @@ func (o *LogOptions) AddFlagsTo(fs *pflag.FlagSet) {
 
 // Validate the options fields.
 func (o *LogOptions) Validate() []error {
-	var errs []error
+	var (
+		errs            []error
+		availableLevels = []string{"debug", "info", "warn", "error", "dpanic", "panic", "fatal"}
+	)
 
-	var zapLevel zapcore.Level
-	if err := zapLevel.UnmarshalText([]byte(o.Level)); err != nil {
-		errs = append(errs, err)
+	if !util.HasEntry(availableLevels, o.Level) {
+		errs = append(errs, fmt.Errorf(
+			"unknown log.level: %s, available log levels: %v",
+			o.Level,
+			availableLevels,
+		))
 	}
 
 	format := strings.ToLower(o.Format)
 	if format != consoleFormat && format != jsonFormat {
-		errs = append(errs, fmt.Errorf("invalid log format: %q", o.Format))
+		errs = append(errs, fmt.Errorf(
+			"unknown log.format: %s, available log formats: [%s %s]",
+			o.Format,
+			consoleFormat,
+			jsonFormat,
+		))
+	}
+
+	errs = checkOutputPaths(flagLogOutputPaths, o.OutputPaths, errs)
+	errs = checkOutputPaths(flagLogErrorOutputPaths, o.ErrorOutputPaths, errs)
+
+	return errs
+}
+
+func checkOutputPaths(flagName string, paths []string, errs []error) []error {
+	for _, f := range paths {
+		if strings.ToLower(f) == "stdout" || strings.ToLower(f) == "stderr" {
+			if f != "stdout" && f != "stderr" {
+				errs = append(errs, fmt.Errorf(
+					"invalid %s: %s, should be: %s",
+					flagName,
+					f,
+					strings.ToLower(f),
+				))
+			}
+
+			continue
+		}
+
+		if err := checkLogfile(f); err != nil {
+			errs = append(
+				errs,
+				fmt.Errorf("unavailable %s: %s, error: %w", flagName, f, err),
+			)
+		}
 	}
 
 	return errs
+}
+
+func checkLogfile(filename string) error {
+	_, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		err = os.MkdirAll(filepath.Dir(filename), 0744)
+		if err != nil {
+			return fmt.Errorf("make directory for new logfile failed: %w", err)
+		}
+
+		_, err = os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+
+	_, err = os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+
+	return err
 }

@@ -38,7 +38,7 @@ func createAPIServer(cfg *config.Config) (*apiServer, error) {
 	server := &apiServer{
 		gs:               gs,
 		genericAPIServer: genericServer,
-		mysqlOptions:     cfg.MySQLOptions,
+		mysqlOptions:     cfg.MySQL,
 	}
 
 	return server, nil
