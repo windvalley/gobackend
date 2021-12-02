@@ -62,7 +62,6 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 			MaxIdleConnections:    opts.MaxIdleConnections,
 			MaxOpenConnections:    opts.MaxOpenConnections,
 			MaxConnectionLifetime: opts.MaxConnectionLifetime * time.Second, //nolint:durationcheck
-			LogLevel:              opts.LogLevel,
 			Logger:                gormlog.New(opts.LogLevel),
 		}
 

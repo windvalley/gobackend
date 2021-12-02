@@ -54,9 +54,9 @@ mysql:
   max-open-connections: 100
   # Default: 120(s)
   max-connection-lifetime: 120
-  # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
-  # Default: 1
-  log-level: 3
+  # GORM log level: silent, error, warn, info;
+  # Default: silent
+  log-level: warn
   # Auto migrate database or not.
   # It is not recommended to open it in a production environment.
   # Default: false

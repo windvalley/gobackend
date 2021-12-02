@@ -18,7 +18,6 @@ type Options struct {
 	MaxIdleConnections    int
 	MaxOpenConnections    int
 	MaxConnectionLifetime time.Duration
-	LogLevel              int
 	Logger                logger.Interface
 }
 

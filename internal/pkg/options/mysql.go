@@ -15,7 +15,7 @@ type MySQLOptions struct {
 	MaxIdleConnections    int           `json:"max-idle-connections,omitempty"     mapstructure:"max-idle-connections"`
 	MaxOpenConnections    int           `json:"max-open-connections,omitempty"     mapstructure:"max-open-connections"`
 	MaxConnectionLifetime time.Duration `json:"max-connection-lifetime,omitempty"  mapstructure:"max-connection-lifetime"`
-	LogLevel              int           `json:"log-level"                          mapstructure:"log-level"`
+	LogLevel              string        `json:"log-level"                          mapstructure:"log-level"`
 	AutoMigrate           bool          `json:"auto-migrate"                       mapstructure:"auto-migrate"`
 }
 
@@ -29,7 +29,7 @@ func NewMySQLOptions() *MySQLOptions {
 		MaxIdleConnections:    100,
 		MaxOpenConnections:    100,
 		MaxConnectionLifetime: time.Duration(120) * time.Second,
-		LogLevel:              1,
+		LogLevel:              "silent",
 		AutoMigrate:           false,
 	}
 }
@@ -92,7 +92,7 @@ func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet) {
 		"Maximum connection life time allowed to connect to mysql.",
 	)
 
-	fs.IntVar(
+	fs.StringVar(
 		&o.LogLevel,
 		"mysql.log-mode",
 		o.LogLevel,

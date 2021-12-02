@@ -38,6 +38,13 @@ const (
 	Info
 )
 
+var logLevelMap = map[string]int{
+	"silent": 1,
+	"error":  2,
+	"warn":   3,
+	"info":   4,
+}
+
 // Writer log writer interface.
 type Writer interface {
 	Printf(string, ...interface{})
@@ -51,7 +58,7 @@ type Config struct {
 }
 
 // New create a gorm logger instance.
-func New(level int) gormlogger.Interface {
+func New(level string) gormlogger.Interface {
 	var (
 		infoStr      = "%s[info] "
 		warnStr      = "%s[warn] "
@@ -64,7 +71,7 @@ func New(level int) gormlogger.Interface {
 	config := Config{
 		SlowThreshold: 200 * time.Millisecond,
 		Colorful:      false,
-		LogLevel:      gormlogger.LogLevel(level),
+		LogLevel:      gormlogger.LogLevel(logLevelMap[level]),
 	}
 
 	if config.Colorful {
