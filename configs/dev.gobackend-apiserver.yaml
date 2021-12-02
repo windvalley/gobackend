@@ -1,6 +1,6 @@
 # RESTful API
 server:
-  # server mode: release, debug, test;
+  # Server mode: release, debug, test;
   # Default: release
   mode: debug
   # Enable server health check or not，if enabled, will install /healthz router;
@@ -31,10 +31,10 @@ secure:
   # Default: 8443
   bind-port: 8443
   tls:
-    # x509 cert file, if null, will not enable https;
+    # X509 cert file, if null, will not enable https;
     # Default: ""
     cert-file: ./configs/cert/cert.pem
-    # key file;
+    # Cert key file;
     # Default: ""
     key-file: ./configs/cert/key.pem
 
@@ -52,7 +52,6 @@ mysql:
   max-idle-connections: 100
   # Default: 100
   max-open-connections: 100
-  # in seconds
   # Default: 120(s)
   max-connection-lifetime: 120
   # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
@@ -60,21 +59,21 @@ mysql:
   log-level: 4
 
 log:
-  # Logger Name;
+  # Logger name;
   # Default: ""
   name: apiserver
-  # debug, info, warn, error, dpanic, panic, fatal;
+  # Values: debug, info, warn, error, dpanic, panic, fatal;
   # Default: info
   level: debug
-  # console, json;
+  # Values: console, json;
   # Default: console
   format: console
   # Default: false
   disable-color: false
-  # caller will print filename, funcname, line number;
+  # Caller will print filename, funcname, line number;
   # Default: false
   disable-caller: false
-  # stacktrace will print stack information above panic level;
+  # Stacktrace will print stack information above panic level;
   # Default: false
   disable-stacktrace: false
   # All log level messages will be writen to;
@@ -108,9 +107,9 @@ log:
   rotate-compress: false
 
 feature:
-  # If enable, it will add router: /metrics;
+  # If true, it will add router: /metrics;
   # Default: true
   enable-metrics: true
-  # <host>:<port>/debug/pprof/;
+  # If true, it will add routers: /debug/pprof/[*];
   # Default: true
-  profiling: false
+  profiling: true
