@@ -46,7 +46,7 @@ func createAPIServer(cfg *config.Config) (*apiServer, error) {
 
 func (s *apiServer) PrepareRun() preparedAPIServer {
 	if err := mysql.InitMySQLFactory(s.mysqlOptions); err != nil {
-		log.Fatalf("Init mysql failed: %s", err)
+		log.Fatalf("init mysql failed: %s", err)
 	}
 
 	initRouter(s.genericAPIServer.Engine)

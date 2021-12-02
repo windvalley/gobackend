@@ -14,7 +14,7 @@ import (
 
 // Update update a user info by the user identifier.
 func (u *Controller) Update(c *gin.Context) {
-	log.C(c).Info("update user function called.")
+	log.C(c).Debug("update user function called")
 
 	var r v1.User
 

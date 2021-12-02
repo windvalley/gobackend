@@ -14,7 +14,7 @@ import (
 
 // List users.
 func (u *Controller) List(c *gin.Context) {
-	log.C(c).Info("list domains function called")
+	log.C(c).Debug("list domains function called")
 
 	var r metav1.ListOptions
 	if err := c.ShouldBindQuery(&r); err != nil {

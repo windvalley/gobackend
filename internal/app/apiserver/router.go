@@ -25,7 +25,7 @@ func installMiddleware(g *gin.Engine) {
 
 func installController(g *gin.Engine) *gin.Engine {
 	g.NoRoute(func(c *gin.Context) {
-		core.WriteResponse(c, errors.WithCode(code.ErrPageNotFound, "Page not found."), nil)
+		core.WriteResponse(c, errors.WithCode(code.ErrPageNotFound, "URL path not found"), nil)
 	})
 
 	storeIns := mysql.GetMysqlFactory()

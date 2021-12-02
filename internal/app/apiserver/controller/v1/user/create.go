@@ -14,7 +14,7 @@ import (
 
 // Create add new user to the storage.
 func (u *Controller) Create(c *gin.Context) {
-	log.C(c).Info("user create function called.")
+	log.C(c).Debug("user create function called")
 
 	var r v1.User
 
