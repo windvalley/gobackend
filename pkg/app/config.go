@@ -63,12 +63,14 @@ func setConfigName(binaryName, runModeEnv string) {
 	if !ok {
 		_, _ = fmt.Fprintf(
 			os.Stderr,
-			"%s env %s not exist, it will load development config file by default\n",
-			color.YellowString("Warning:"),
+			"%s env %s not exist, please export %s/test/prod first or specify config file by %s flag\n",
+			color.RedString("Error:"),
 			color.BlueString(runModeEnv),
+			color.BlueString(runModeEnv+"=dev"),
+			color.BlueString("-c/--config"),
 		)
 
-		viper.SetConfigName("dev." + binaryName)
+		os.Exit(1)
 	} else {
 		switch runEnv {
 		case "test":
@@ -80,12 +82,14 @@ func setConfigName(binaryName, runModeEnv string) {
 		default:
 			_, _ = fmt.Fprintf(
 				os.Stderr,
-				"%s invalid %s value, it will load development config file by default\n",
-				color.YellowString("Warning:"),
-				color.BlueString(runModeEnv),
+				"%s unknown %s: %s, available value: [%s]\n",
+				color.RedString("Error:"),
+				runModeEnv,
+				color.YellowString(runEnv),
+				color.BlueString("dev test prod"),
 			)
 
-			viper.SetConfigName("dev." + binaryName)
+			os.Exit(1)
 		}
 	}
 }
