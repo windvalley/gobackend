@@ -57,6 +57,10 @@ mysql:
   # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
   # Default: 1
   log-level: 4
+  # Auto migrate database or not.
+  # It is not recommended to open it in a production environment.
+  # Default: false
+  auto-migrate: true
 
 log:
   # Logger name;

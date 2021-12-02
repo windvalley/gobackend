@@ -56,7 +56,11 @@ mysql:
   max-connection-lifetime: 120
   # GORM log level: 1(silent), 2(error), 3(warn), 4(info)
   # Default: 1
-  log-level: 4
+  log-level: 3
+  # Auto migrate database or not.
+  # It is not recommended to open it in a production environment.
+  # Default: false
+  auto-migrate: false
 
 log:
   # Logger name;
@@ -69,7 +73,7 @@ log:
   # Default: console
   format: json
   # Default: false
-  disable-color: false
+  disable-color: true
   # caller will print filename, funcname, line number;
   # Default: false
   disable-caller: false
@@ -112,4 +116,4 @@ feature:
   enable-metrics: true
   # If true, it will add routers: /debug/pprof/[*];
   # Default: true
-  profiling: true
+  profiling: false

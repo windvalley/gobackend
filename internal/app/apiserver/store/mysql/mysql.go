@@ -72,13 +72,14 @@ func InitMySQLFactory(opts *genericoptions.MySQLOptions) error {
 			return
 		}
 
-		log.Info("start auto migrate mysql database ...")
-		// not suggested in production environment.
-		err = migrateDatabase(dbIns)
-		if err != nil {
-			err = fmt.Errorf("migrate database failed: %w", err)
+		if opts.AutoMigrate {
+			log.Info("start auto migrate mysql database ...")
+			err = migrateDatabase(dbIns)
+			if err != nil {
+				err = fmt.Errorf("migrate database failed: %w", err)
 
-			return
+				return
+			}
 		}
 
 		mysqlFactory = &datastore{dbIns}
