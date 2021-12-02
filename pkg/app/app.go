@@ -281,19 +281,19 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 		log.Infof("Starting %s ...", a.name)
 
 		if !a.noVersion {
-			log.Infof("Version: `%s`", version.Get().ToJSON())
-		}
-
-		if a.runModeEnv != "" {
-			log.Infof(
-				"Run environment variable: %s, value: %s",
-				a.runModeEnv,
-				os.Getenv(a.runModeEnv),
-			)
+			log.Infof("Version: %s", version.Get().ToJSON())
 		}
 
 		if !a.noConfig {
-			log.Infof("Config file used: `%s`", viper.ConfigFileUsed())
+			if a.runModeEnv != "" {
+				log.Infof(
+					"Run environment variable: %s, value: %s",
+					a.runModeEnv,
+					os.Getenv(a.runModeEnv),
+				)
+			}
+
+			log.Infof("Config file used: %s", viper.ConfigFileUsed())
 		}
 	}
 
@@ -316,7 +316,7 @@ func (a *App) applyOptionRules() error {
 	}
 
 	if printableOptions, ok := a.options.(PrintableOptions); ok && !a.silence {
-		log.Infof("Config contents: `%s`", printableOptions.String())
+		log.Infof("Config contents: %s", printableOptions.String())
 	}
 
 	return nil
