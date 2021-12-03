@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 SED := sed
 
-# Go binariy.
+# Go binary.
 GO := go
 
 # Project source code test coverage threshold.
@@ -17,10 +17,10 @@ Options:
 
    BINS        The binaries to build. Default is all commands in cmd/.
                This option is available for: make build/build.multiarch
-               Example: make build BINS="apiserver otherbin"
+               Example: make build BINS="apiserver otherbinary"
    IMAGES      Docker images to build. Default is all commands in cmd/.
                This option is available when using: make image/image.multiarch.
-               Example: make image.multiarch IMAGES="apiserver otherbin"
+               Example: make image.multiarch IMAGES="apiserver otherbinary"
    PLATFORMS   The multiple platforms to build.
                Default is 'darwin_amd64 darwin_arm64 linux_amd64 linux_arm64 windows_amd64'.
                This option is available when using: make build.multiarch.
@@ -55,7 +55,7 @@ run.dev:
 run.test:
 	@./scripts/run.sh test
 
-##  build: Compile packages and dependencies to generate bin file for current platform.
+##  build: Compile packages and dependencies to generate binary file for current platform.
 .PHONY: build
 build:
 	@${MAKE} go.build

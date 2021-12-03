@@ -18,7 +18,7 @@ Enterprise-grade Go web backend scaffolding based on
 
 - The configuration items in the configuration file are unified with the command line parameters, and the command line parameters take precedence(Realized by [cobra][1], [viper][2] and [pflag][3]).
 
-- Powerful logger built by [zap][4] and [lumberjack](https://github.com/natefinch/lumberjack), supports color, function caller, hooks, multi-outputs, rotation, etc.
+- Powerful logger built with [zap][4] and [lumberjack](https://github.com/natefinch/lumberjack), supports color, function caller, hooks, multi-outputs, rotation, etc.
 
 - Integrated many useful middlewares, which can be flexibly configured in the configuration file.
 
@@ -26,11 +26,13 @@ Enterprise-grade Go web backend scaffolding based on
 
 - Server graceful shutdown.
 
-- Process lock.
-
 - Custom your own environment variable to specify run environments(dev/test/prod).
 
-- Generate error code documentation file and necessary error code source files.
+- Auto generate error code documentation file and necessary error code source files.
+
+- Support application process lock.
+
+- Support cloud native deployment.
 
 - Use `Makefile` to manage the project efficiently and conveniently.
 
@@ -65,7 +67,7 @@ Create database:
 $ mysql -h 127.0.0.1 -P 3306 -uroot -p'123456' -e "create database gobackend;"
 ```
 
-Project run:
+Run in development environment:
 
 ```sh
 $ make run.dev
@@ -85,7 +87,7 @@ Targets:
    all               Make gen, lint, cover, build
    run.dev           Run in development mode.
    run.test          Run in test mode.
-   build             Compile packages and dependencies to generate bin file for current platform.
+   build             Compile packages and dependencies to generate binary file for current platform.
    build.multiarch   Build for multiple platforms. See option PLATFORMS.
    image             Build docker images for host arch.
    push              Build docker images for host arch and push images to registry.
@@ -100,10 +102,10 @@ Options:
 
    BINS        The binaries to build. Default is all commands in cmd/.
                This option is available for: make build/build.multiarch
-               Example: make build BINS="apiserver otherbin"
+               Example: make build BINS="apiserver otherbinary"
    IMAGES      Docker images to build. Default is all commands in cmd/.
                This option is available when using: make image/image.multiarch.
-               Example: make image.multiarch IMAGES="apiserver otherbin"
+               Example: make image.multiarch IMAGES="apiserver otherbinary"
    PLATFORMS   The multiple platforms to build.
                Default is 'darwin_amd64 darwin_arm64 linux_amd64 linux_arm64 windows_amd64'.
                This option is available when using: make build.multiarch.
