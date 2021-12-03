@@ -29,13 +29,14 @@ find ../ -type f -name "*.go" |
 
 # shellcheck disable=SC2038
 find ../ -type f -name "go.mod" -o -name "*.makefile" \
-    -o -name "*.md" -o -name "*.yaml" -o -name "*.sh" |
+    -o -name "*.md" -o -name "*.yaml" -o -name "*.sh" -o -name "*Dockerfile" |
     xargs $SED -i "s#${CURRENT_PROJECT_NAME}#${NEW_PROJECT_NAME}#"
 
 mv ../cmd/{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver
 
-mv ../configs/{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
 mv ../configs/dev.{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
+mv ../configs/test.{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
+mv ../configs/prod.{"${CURRENT_PROJECT_NAME}","${NEW_PROJECT_NAME}"}-apiserver.yaml
 
 mv ../build/docker/{"$CURRENT_PROJECT_NAME","$NEW_PROJECT_NAME"}-apiserver
 

@@ -1,4 +1,4 @@
-name: gobackendci
+name: GobackendCI
 
 on:
   push:
