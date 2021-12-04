@@ -11,7 +11,7 @@ jobs:
     name: Test with go ${{ matrix.go_version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     environment:
-      name: gobackendci
+      name: gobackendCI
 
     strategy:
       matrix:
