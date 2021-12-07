@@ -16,7 +16,11 @@ import (
 
 const configFlagName = "config"
 
-var cfgFile string
+var (
+	cfgFile string
+
+	errorStr = color.RedString("Error:")
+)
 
 //nolint: gochecknoinits
 func init() {
@@ -42,7 +46,7 @@ func parseConfigFile(binaryName, runModeEnv string) {
 	}
 
 	if err := viper.ReadInConfig(); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%s read config file failed: %s\n", color.RedString("Error:"), err)
+		_, _ = fmt.Fprintf(os.Stderr, "%s read config file failed: %s\n", errorStr, err)
 		os.Exit(1)
 	}
 }
@@ -64,7 +68,7 @@ func setConfigName(binaryName, runModeEnv string) {
 		_, _ = fmt.Fprintf(
 			os.Stderr,
 			"%s env %s not exist, please export %s/test/prod first or specify config file by %s flag\n",
-			color.RedString("Error:"),
+			errorStr,
 			color.BlueString(runModeEnv),
 			color.BlueString(runModeEnv+"=dev"),
 			color.BlueString("-c/--config"),
@@ -83,7 +87,7 @@ func setConfigName(binaryName, runModeEnv string) {
 			_, _ = fmt.Fprintf(
 				os.Stderr,
 				"%s unknown %s: %s, available value: [%s]\n",
-				color.RedString("Error:"),
+				errorStr,
 				runModeEnv,
 				color.YellowString(runEnv),
 				color.BlueString("dev test prod"),
