@@ -1,6 +1,13 @@
 # GoBackend
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
+[![Github Workflow Status](https://img.shields.io/github/workflow/status/windvalley/gobackend/GobackendCI)](https://github.com/windvalley/gobackend/actions/workflows/gobackendci.yaml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
+[![License](https://img.shields.io/github/license/windvalley/gobackend)](License) <br>
+![Page Views](https://views.whatilearened.today/views/github/windvalley/gobackend.svg)
+[![Traffic Clones Total](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.sre.im%2Fv1%2Fgithub%2Ftraffic%2Fclones%2Ftotal%3Fgit_user%3Dwindvalley%26git_repo%3Dgobackend%26type%3Dcount%26label%3Dclones-total)](https://github.com/windvalley/traffic-clones-api)
+[![Traffic Clones Uniques](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.sre.im%2Fv1%2Fgithub%2Ftraffic%2Fclones%2Ftotal%3Fgit_user%3Dwindvalley%26git_repo%3Dgobackend%26type%3Duniques%26label%3Dclones-uniques)](https://github.com/windvalley/traffic-clones-api)
 
 Enterprise-grade Go web backend scaffolding based on
 [cobra][1], [viper][2], [pflag][3], [zap][4], [gorm][5], [gin][6].
