@@ -3,6 +3,7 @@ package mysql
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	gorm "gorm.io/gorm"
 
@@ -25,7 +26,16 @@ func newUsers(ds *datastore) *users {
 
 // Create creates a new user account.
 func (u *users) Create(ctx context.Context, user *v1.User, opts metav1.CreateOptions) error {
-	return u.db.Create(&user).Error
+	if err := u.db.Create(&user).Error; err != nil {
+		ok, _ := regexp.MatchString("^Error 1062:", err.Error())
+		if ok {
+			return errors.WithCode(code.ErrUserAlreadyExist, err.Error())
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 // Update updates an user account information.
