@@ -38,6 +38,9 @@ type GenericAPIServer struct {
 	// gracefully shutdown returns.
 	ShutdownTimeout time.Duration
 
+	// enable operation logs feature.
+	enableOperationLogging bool
+
 	*gin.Engine
 	healthz         bool
 	enableMetrics   bool
@@ -56,7 +59,7 @@ func initGenericAPIServer(s *GenericAPIServer) {
 	s.InstallAPIs()
 }
 
-// Setup ...
+// Setup the api server.
 func (s *GenericAPIServer) Setup() {
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		log.Infof("%-6s %-s --> %s (%d handlers)", httpMethod, absolutePath, handlerName, nuHandlers)

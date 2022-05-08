@@ -117,3 +117,6 @@ feature:
   # If true, it will add routers: /debug/pprof/[*];
   # Default: true
   profiling: true
+  # If true, it will write operation logs to database.
+  # Default: false
+  operation-logging: true

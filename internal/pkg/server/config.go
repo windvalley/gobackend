@@ -24,13 +24,14 @@ const (
 // Config is a structure used to configure a GenericAPIServer.
 // Its members are sorted roughly in order of importance for composers.
 type Config struct {
-	InsecureServing *InsecureServingInfo
-	SecureServing   *SecureServingInfo
-	Mode            string
-	Middlewares     []string
-	Healthz         bool
-	EnableProfiling bool
-	EnableMetrics   bool
+	InsecureServing        *InsecureServingInfo
+	SecureServing          *SecureServingInfo
+	Mode                   string
+	Middlewares            []string
+	Healthz                bool
+	EnableProfiling        bool
+	EnableMetrics          bool
+	EnableOperationLogging bool
 }
 
 // InsecureServingInfo holds configuration of the insecure http server.
@@ -61,11 +62,12 @@ func (s *SecureServingInfo) Address() string {
 // NewConfig returns a Config struct with the default values.
 func NewConfig() *Config {
 	return &Config{
-		Healthz:         true,
-		Mode:            gin.ReleaseMode,
-		Middlewares:     []string{},
-		EnableProfiling: false,
-		EnableMetrics:   true,
+		Healthz:                true,
+		Mode:                   gin.ReleaseMode,
+		Middlewares:            []string{},
+		EnableProfiling:        false,
+		EnableMetrics:          true,
+		EnableOperationLogging: false,
 	}
 }
 
@@ -87,14 +89,15 @@ func (c CompletedConfig) NewServer() (*GenericAPIServer, error) {
 	engine := gin.New()
 
 	s := &GenericAPIServer{
-		InsecureServingInfo: c.InsecureServing,
-		SecureServingInfo:   c.SecureServing,
-		mode:                c.Mode,
-		healthz:             c.Healthz,
-		enableMetrics:       c.EnableMetrics,
-		enableProfiling:     c.EnableProfiling,
-		middlewares:         c.Middlewares,
-		Engine:              engine,
+		InsecureServingInfo:    c.InsecureServing,
+		SecureServingInfo:      c.SecureServing,
+		mode:                   c.Mode,
+		healthz:                c.Healthz,
+		enableMetrics:          c.EnableMetrics,
+		enableProfiling:        c.EnableProfiling,
+		enableOperationLogging: c.EnableOperationLogging,
+		middlewares:            c.Middlewares,
+		Engine:                 engine,
 	}
 
 	initGenericAPIServer(s)

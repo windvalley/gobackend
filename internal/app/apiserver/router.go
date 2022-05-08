@@ -2,14 +2,17 @@ package apiserver
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 
 	"gobackend/pkg/core"
 	"gobackend/pkg/errors"
 	"gobackend/pkg/log"
 
+	"gobackend/internal/app/apiserver/controller/operationlog"
 	"gobackend/internal/app/apiserver/controller/v1/user"
 	"gobackend/internal/app/apiserver/store/mysql"
 	"gobackend/internal/pkg/code"
+	"gobackend/internal/pkg/middleware"
 
 	// Custom gin validators.
 	_ "gobackend/internal/pkg/validator"
@@ -31,6 +34,19 @@ func installController(g *gin.Engine) *gin.Engine {
 	storeIns := mysql.GetMysqlFactory()
 
 	log.Infof("get mysql factory instance: %v", storeIns)
+
+	// Operation logging.
+	if viper.GetBool("feature.operation-logging") {
+		g.Use(middleware.OperationLog(storeIns))
+
+		ol := g.Group("/operation-logs")
+		{
+			olController := operationlog.NewController(storeIns)
+
+			ol.GET("", olController.List)
+			ol.DELETE(":id", olController.Delete)
+		}
+	}
 
 	v1 := g.Group("/v1")
 	{

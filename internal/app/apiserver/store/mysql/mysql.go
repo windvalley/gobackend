@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/spf13/viper"
 	"gorm.io/gorm"
 
 	"gobackend/pkg/db"
@@ -12,6 +13,7 @@ import (
 	"gobackend/pkg/log"
 
 	"gobackend/internal/app/apiserver/store"
+	"gobackend/internal/pkg/entity/apiserver/operationlog"
 	v1 "gobackend/internal/pkg/entity/apiserver/v1"
 	"gobackend/internal/pkg/gormlog"
 	genericoptions "gobackend/internal/pkg/options"
@@ -27,6 +29,10 @@ type datastore struct {
 
 func (ds *datastore) Users() store.UserStore {
 	return newUsers(ds)
+}
+
+func (ds *datastore) OperationLogs() store.OperationLogStore {
+	return newOperationLogs(ds)
 }
 
 func (ds *datastore) Close() error {
@@ -114,9 +120,15 @@ func cleanDatabase(db *gorm.DB) error {
 // won't delete/change current data.
 // nolint:unused // may be reused in the feature, or just show a migrate usage.
 func migrateDatabase(db *gorm.DB) error {
-	return db.AutoMigrate(
+	tables := []interface{}{
 		&v1.User{},
-	)
+	}
+
+	if viper.GetBool("feature.operation-logging") {
+		tables = append(tables, &operationlog.OperationLog{})
+	}
+
+	return db.AutoMigrate(tables...)
 }
 
 // resetDatabase resets the database tables.

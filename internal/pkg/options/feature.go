@@ -8,8 +8,9 @@ import (
 
 // FeatureOptions contains configuration items related to API server features.
 type FeatureOptions struct {
-	EnableProfiling bool `json:"profiling"      mapstructure:"profiling"`
-	EnableMetrics   bool `json:"enable-metrics" mapstructure:"enable-metrics"`
+	EnableProfiling        bool `json:"profiling"      mapstructure:"profiling"`
+	EnableMetrics          bool `json:"enable-metrics" mapstructure:"enable-metrics"`
+	EnableOperationLogging bool `json:"operation-logging" mapstructure:"operation-logging"`
 }
 
 // NewFeatureOptions creates a FeatureOptions object with default parameters.
@@ -17,8 +18,9 @@ func NewFeatureOptions() *FeatureOptions {
 	defaults := server.NewConfig()
 
 	return &FeatureOptions{
-		EnableMetrics:   defaults.EnableMetrics,
-		EnableProfiling: defaults.EnableProfiling,
+		EnableMetrics:          defaults.EnableMetrics,
+		EnableProfiling:        defaults.EnableProfiling,
+		EnableOperationLogging: defaults.EnableOperationLogging,
 	}
 }
 
@@ -26,6 +28,7 @@ func NewFeatureOptions() *FeatureOptions {
 func (o *FeatureOptions) ApplyTo(c *server.Config) error {
 	c.EnableProfiling = o.EnableProfiling
 	c.EnableMetrics = o.EnableMetrics
+	c.EnableOperationLogging = o.EnableOperationLogging
 
 	return nil
 }
@@ -48,4 +51,11 @@ func (o *FeatureOptions) AddFlags(fs *pflag.FlagSet) {
 
 	fs.BoolVar(&o.EnableMetrics, "feature.enable-metrics", o.EnableMetrics,
 		"Enables metrics on the apiserver at /metrics")
+
+	fs.BoolVar(
+		&o.EnableOperationLogging,
+		"feature.operation-logging",
+		o.EnableOperationLogging,
+		"Enable operation logging of the apiserver",
+	)
 }

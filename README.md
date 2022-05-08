@@ -35,11 +35,13 @@ Enterprise-grade Go web backend scaffolding based on
 
 - Custom your own environment variable to specify run environments(dev/test/prod).
 
+- Supports operation logging and exposes related restful apis.
+
 - Auto generate error code documentation file and necessary error code source files.
 
-- Support application process lock.
+- Supports application process lock.
 
-- Support cloud native deployment.
+- Supports cloud native deployment.
 
 - Use `Makefile` to manage the project efficiently and conveniently.
 

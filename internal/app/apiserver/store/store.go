@@ -2,9 +2,10 @@ package store
 
 var client Factory
 
-// Factory ...
+// Factory is the interface of store client.
 type Factory interface {
 	Users() UserStore
+	OperationLogs() OperationLogStore
 	Close() error
 }
 

@@ -87,14 +87,18 @@ func (u *users) List(ctx context.Context, opts metav1.ListOptions) (*v1.UserList
 	ol := gormtool.Unpointer(opts.Offset, opts.Limit)
 
 	var (
-		where string
-		err   error
+		where    string
+		selector fields.Selector
+		err      error
 	)
 
 	// opt.FieldSelector e.g.:
 	// https://.../?field_selector=name==levin,email=n@gmail.com
 	// == means exact match, and = means fuzzy match.
-	selector, _ := fields.ParseSelector(opts.FieldSelector)
+	selector, err = fields.ParseSelector(opts.FieldSelector)
+	if err != nil {
+		return nil, err
+	}
 
 	for _, require := range selector.Requirements() {
 		switch require.Field {
