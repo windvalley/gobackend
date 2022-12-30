@@ -1,6 +1,7 @@
 # GoBackend
 
-[![Github Workflow Status](https://img.shields.io/github/workflow/status/windvalley/gobackend/GobackendCI)](https://github.com/windvalley/gobackend/actions/workflows/gobackendci.yaml)
+[![Language](https://img.shields.io/badge/Language-Go-blue.svg)](https://go.dev)
+[![Github Workflow Status](https://img.shields.io/github/actions/workflow/status/windvalley/gobackend/gobackendci.yaml)](https://github.com/windvalley/gobackend/actions/workflows/gobackendci.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=windvalley_gobackend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=windvalley_gobackend)
