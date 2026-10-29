@@ -3,6 +3,7 @@
 ## 应该发生
 
 - A1 README 的快速开始小节标题是 `## Quick Start`，全文不再出现 `Quik`。
+- A2 README 顶部 License 徽章链接到仓库里实际存在的 `LICENSE` 文件，大小写一致，在 GitHub 上点开不是 404。
 
 ## 绝对不能发生
 
