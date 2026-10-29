@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "mainBranch": "main",
+  "verify": {
+    "timeoutSeconds": 1800,
+    "failFast": true
+  },
+  "merge": {
+    "subjectPrefix": "Merge: ",
+    "postMergeCommand": null,
+    "requireEvidence": true,
+    "requireReview": true,
+    "commitMessagePattern": "^[a-z]+(\\([^)]+\\))?: .+\\n\\n(- .+\\n?)+$",
+    "forbidMessagePatterns": [
+      "^Co-Authored-By:",
+      "^Co-authored-by:"
+    ]
+  },
+  "review": {
+    "backend": "auto",
+    "model": "sonnet",
+    "maxBudgetUsd": 2,
+    "codexModel": null,
+    "command": null,
+    "blockSeverities": [
+      "high",
+      "critical"
+    ],
+    "maxDiffChars": 300000
+  },
+  "intent": {
+    "mode": "checklist",
+    "dir": "acceptance",
+    "plan": {
+      "maxLines": 500,
+      "markers": [
+        "docs/changes/*/plan.md"
+      ],
+      "triggers": [
+        "**/migrations/**",
+        "**/*.sql"
+      ],
+      "exclude": [
+        "**/*_test.go",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/test/**",
+        "**/tests/**",
+        "**/__tests__/**",
+        "**/testdata/**",
+        "docs/**",
+        "**/*.md",
+        "**/*.lock",
+        "**/package-lock.json",
+        "**/pnpm-lock.yaml",
+        "**/go.sum",
+        ".harness/**"
+      ]
+    }
+  },
+  "governance": {
+    "confirmOnGateChange": true,
+    "gatePaths": []
+  },
+  "escalate": {
+    "triggers": [
+      "需求有歧义且会改变行为或权限",
+      "必要验证被既有问题阻塞",
+      "涉及推送、远程 MR、部署或生产操作",
+      "同一方案连续失败两次"
+    ]
+  },
+  "env": {},
+  "worktree": {
+    "cleanup": []
+  },
+  "delivery": {
+    "mode": "remote",
+    "remote": "origin",
+    "provider": "github"
+  }
+}

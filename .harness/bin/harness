@@ -1,0 +1,21 @@
+#!/bin/sh
+# harness 入口 shim，由 harness install 生成，入库随仓库分发，请勿手工修改。
+# 代码在用户目录按版本安装；这里只负责转发，并锁住版本，避免任务分支改代码影响门禁。
+HARNESS_VERSION="${HARNESS_VERSION:-0.9.0}"
+HARNESS_STORE="${HARNESS_STORE:-$HOME/.local/share/harness/versions}"
+entry="$HARNESS_STORE/$HARNESS_VERSION/bin/harness.mjs"
+if [ ! -f "$entry" ]; then
+  msg="[harness] 本机没有安装门禁锁定的版本 $HARNESS_VERSION。请用户在自己的终端（Claude Code 里可在输入框用 ! 前缀）于项目目录运行 node <harness 仓库>/bin/harness.mjs install --local"
+  # 实时拦截在未安装时一律拒绝：放行等于门禁不存在。Claude 以退出码 2 拒绝，Codex 读 permissionDecision。
+  if [ "$1" = "hook" ]; then
+    if [ "$3" = "codex" ]; then
+      printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"%s"}}\n' "$msg"
+      exit 0
+    fi
+    printf '%s\n' "$msg" >&2
+    exit 2
+  fi
+  printf '%s\n' "$msg" >&2
+  exit 3
+fi
+exec node "$entry" "$@"

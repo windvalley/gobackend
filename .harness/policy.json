@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "presets": [
+    "secrets",
+    "git-safety",
+    "gate-self",
+    "plan-first"
+  ],
+  "disabled": [],
+  "rules": [
+    {
+      "id": "commit-message",
+      "kind": "commit-message",
+      "pattern": "^[a-z]+(\\([^)]+\\))?: .+",
+      "forbidPatterns": [
+        "^Co-Authored-By:",
+        "^Co-authored-by:"
+      ],
+      "reason": "提交信息必须符合项目提交规范",
+      "fix": "按项目提交规范改写提交信息"
+    }
+  ]
+}
