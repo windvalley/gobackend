@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "docOnly": {
+    "match": [
+      "docs/**",
+      "**/*.md"
+    ],
+    "exclude": []
+  },
+  "checks": [
+    {
+      "id": "go-test",
+      "tier": "gate",
+      "when": [
+        "**/*.go"
+      ],
+      "cmd": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ]
+    },
+    {
+      "id": "go-build",
+      "tier": "gate",
+      "when": [
+        "**/*.go",
+        "go.mod"
+      ],
+      "cmd": [
+        "go",
+        "build",
+        "./..."
+      ]
+    },
+    {
+      "id": "lint",
+      "tier": "extended",
+      "reason": "起始占位，尚未配置项目的 lint 命令",
+      "howToVerify": "在 .harness/verify.json 把 lint 的 cmd 改成项目实际的 lint 命令，tier 改为 gate",
+      "when": [
+        "**/*.js",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.go",
+        "**/*.py",
+        "**/*.rs",
+        "**/*.java",
+        "src/**",
+        "lib/**",
+        "app/**"
+      ]
+    },
+    {
+      "id": "harness-golden",
+      "tier": "gate",
+      "when": [
+        ".harness/**"
+      ],
+      "cmd": [
+        ".harness/bin/harness",
+        "golden",
+        "--worktree"
+      ]
+    },
+    {
+      "id": "manual-check",
+      "tier": "extended",
+      "when": [
+        "src/**"
+      ],
+      "reason": "需要人工确认的检查，示例项",
+      "howToVerify": "按项目实际情况填写补验命令"
+    },
+    {
+      "id": "visual-hint",
+      "tier": "advisory",
+      "when": [
+        "src/**"
+      ],
+      "hint": "界面类改动建议人工过一眼，示例项"
+    }
+  ],
+  "fullSuiteTriggers": {
+    "doc": "影响范围无法限定时扩大到全量",
+    "paths": []
+  }
+}
