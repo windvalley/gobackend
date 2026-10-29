@@ -48,7 +48,7 @@ Enterprise-grade Go web backend scaffolding based on
 
 - Testable and maintainable codes.
 
-## Quik Start
+## Quick Start
 
 ```sh
 $ git clone --depth 1 https://github.com/windvalley/gobackend.git
