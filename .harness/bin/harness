@@ -1,7 +1,7 @@
 #!/bin/sh
 # harness 入口 shim，由 harness install 生成，入库随仓库分发，请勿手工修改。
 # 代码在用户目录按版本安装；这里只负责转发，并锁住版本，避免任务分支改代码影响门禁。
-HARNESS_VERSION="${HARNESS_VERSION:-0.9.0}"
+HARNESS_VERSION="${HARNESS_VERSION:-0.9.1}"
 HARNESS_STORE="${HARNESS_STORE:-$HOME/.local/share/harness/versions}"
 entry="$HARNESS_STORE/$HARNESS_VERSION/bin/harness.mjs"
 if [ ! -f "$entry" ]; then
